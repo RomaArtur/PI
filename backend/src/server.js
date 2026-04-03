@@ -2,8 +2,8 @@ import dotenv from "dotenv/config";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import connectDB from "./src/config/db.js";
-import routes from "./src/routes/index.js";
+import connectDB from "./config/db.js";
+import routes from "./routes/index.js";
 
 const app = express();
 
