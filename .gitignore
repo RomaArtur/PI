@@ -17,13 +17,13 @@ yarn-debug.log*
 yarn-error.log*
 .postman/
 
-# Diretórios de build/compilação (se usarmos TypeScript no futuro)
+# Diretórios de build/compilação (se for usar Typescript) 
 dist/
 build/
 
 # Cobertura de testes
 coverage/
 
-# Arquivos gerados por Sistemas Operacionais
+# Arquivos gerados SO
 .DS_Store
 Thumbs.db
