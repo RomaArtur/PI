@@ -1,0 +1,5 @@
+$kind: http-request
+name: Listar Leads
+url: http://localhost:5000/api/leads
+method: GET
+order: 3000
