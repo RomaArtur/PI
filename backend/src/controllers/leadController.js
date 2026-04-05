@@ -7,13 +7,13 @@ class LeadController {
       const novoLead = new Lead(req.body);
       await novoLead.save();
       res.status(201).json({
-        message: "Lead criado com sucesso",
+        mensagem: "Lead criado com sucesso",
         lead: novoLead,
       });
-    } catch (error) {
+    } catch (erro) {
       res
         .status(400)
-        .json({ message: "Erro ao criar lead", error: error.message });
+        .json({ mensagem: "Erro ao criar lead", erro: erro.mensagem });
     }
   };
 
@@ -24,10 +24,10 @@ class LeadController {
         new: true,
       });
       res.status(200).json(LeadAtualizado);
-    } catch (error) {
+    } catch (erro) {
       res
         .status(400)
-        .json({ message: "Erro ao editar lead", error: error.message });
+        .json({ mensagem: "Erro ao editar lead", erro: erro.mensagem });
     }
   };
 
@@ -35,11 +35,11 @@ class LeadController {
     const { id } = req.params;
     try {
       await Lead.findByIdAndDelete(id);
-      res.status(200).json({ message: "Lead excluído com sucesso" });
-    } catch (error) {
+      res.status(200).json({ mensagem: "Lead excluído com sucesso" });
+    } catch (erro) {
       res
         .status(400)
-        .json({ message: "Erro ao excluir lead", error: error.message });
+        .json({ mensagem: "Erro ao excluir lead", erro: erro.mensagem });
     }
   };
 
@@ -47,10 +47,10 @@ class LeadController {
     try {
       const leads = await Lead.find().sort({ createdAt: -1 });
       res.status(200).json(leads);
-    } catch (error) {
+    } catch (erro) {
       res
         .status(500)
-        .json({ message: "Erro ao listar leads", error: error.message });
+        .json({ mensagem: "Erro ao listar leads", erro: erro.mensagem });
     }
   };
 
@@ -59,13 +59,13 @@ class LeadController {
     try {
       const lead = await Lead.findById(id);
       if (!lead) {
-        return res.status(404).json({ message: "Lead não encontrado" });
+        return res.status(404).json({ mensagem: "Lead não encontrado" });
       }
       res.status(200).json(lead);
-    } catch (error) {
+    } catch (erro) {
       res
         .status(500)
-        .json({ message: "Erro ao buscar lead", error: error.message });
+        .json({ mensagem: "Erro ao buscar lead", erro: erro.mensagem });
     }
   };
 
@@ -74,10 +74,10 @@ class LeadController {
       const aniversariantes = await LeadService.obterEventosDoDia();
 
       res.status(200).json(aniversariantes);
-    } catch (error) {
+    } catch (erro) {
       res.status(500).json({
-        message: "Erro ao buscar eventos do dia",
-        error: error.message,
+        mensagem: "Erro ao buscar eventos do dia",
+        erro: erro.mensagem,
       });
     }
   };

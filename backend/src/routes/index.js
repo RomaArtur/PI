@@ -4,7 +4,7 @@ import leads from "./leadRoutes.js";
 const router = express.Router();
 {
   router.get("/", (req, res) => {
-    res.status(200).send({ message: "Bem-vindo à API" });
+    res.status(200).send({ mensagem: "Bem-vindo à API" });
   });
 
   router.use("/leads", leads);
