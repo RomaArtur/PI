@@ -1,0 +1,5 @@
+$kind: http-request
+name: Buscar Eventos do Dia
+url: " http://localhost:5000/api/leads/hoje"
+method: GET
+order: 101

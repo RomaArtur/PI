@@ -1,0 +1,5 @@
+$kind: http-request
+name: Buscar Lead por ID
+url: " http://localhost:5000/api/leads/"
+method: GET
+order: 990
