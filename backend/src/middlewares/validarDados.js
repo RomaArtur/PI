@@ -1,4 +1,4 @@
-export const validarDadosLead = (schema) => (req, res, next) => {
+export const validarDados = (schema) => (req, res, next) => {
   const resultado = schema.safeParse(req.body);
 
   if (!resultado.success) {
