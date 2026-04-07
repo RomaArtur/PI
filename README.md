@@ -39,3 +39,4 @@ O presente repositório abriga o código-fonte referente ao sistema de gestão d
 * POST /produtos: Insere um novo produto no catálogo do sistema.  
 * PUT, DELETE /produtos/:id: Efetiva a modificação ou exclusão de registros referentes a um produto determinado.
 
+Teste
