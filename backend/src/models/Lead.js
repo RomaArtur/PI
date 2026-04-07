@@ -4,29 +4,29 @@ const leadSchema = new mongoose.Schema(
   {
     nome: {
       type: String,
-      required: [true, "O nome é obrigatório"],
+      required: true,
       trim: true,
     },
     sobrenome: {
       type: String,
-      required: [true, "O sobrenome é obrigatório"],
+      required: true,
       trim: true,
     },
     email: {
       type: String,
-      required: [true, "O email é obrigatório"],
+      required: true,
       unique: true,
       lowercase: true,
       trim: true,
     },
     whatsapp: {
       type: String,
-      required: [true, "O número de WhatsApp é obrigatório"],
+      required: true,
       trim: true,
     },
     consentimento: {
       type: Boolean,
-      required: [true, "O consentimento é obrigatório"],
+      required: true,
       default: false,
     },
     interesses: { type: [String], default: [] },

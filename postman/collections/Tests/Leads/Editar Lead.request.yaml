@@ -1,0 +1,9 @@
+$kind: http-request
+name: Editar Lead
+description: Requisição para **editar** Leads. Consultar por **id**.
+url: http://localhost:5000/api/
+method: PUT
+body:
+  type: json
+  content: ""
+order: 4503358975119683

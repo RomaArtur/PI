@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://localhost:5000/api/vendedores/69d2b8407008050b4fce6780
+method: DELETE
+order: 1182504109252408

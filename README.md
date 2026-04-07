@@ -50,4 +50,3 @@ A solução busca transformar um processo manual e desorganizado em um sistema d
 
 
 
-teste euriane

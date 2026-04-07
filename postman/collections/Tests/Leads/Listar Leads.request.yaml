@@ -1,5 +1,6 @@
 $kind: http-request
 name: Listar Leads
+description: Requisição para **listar** leads.
 url: http://localhost:5000/api/leads
 method: GET
-order: 3000
+order: 1528704065569

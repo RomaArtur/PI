@@ -1,0 +1,21 @@
+$kind: http-request
+description: Requisição para **criar** leads.
+url: http://localhost:5000/api/leads
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"nome\": \"N\",\r
+
+    \    \"sobrenome\": \"S\",\r
+
+    \    \"email\": \"email@\",\r
+
+    \    \"whatsapp\": \"9\",\r
+
+    \    \"consentimento\": true\r
+
+    }"
+examples: .resources/Criar Lead.resources/examples
+order: 1058693162800

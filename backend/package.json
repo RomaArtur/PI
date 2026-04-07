@@ -2,7 +2,7 @@
   "name": "pi",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "description": "Backend",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -19,10 +19,13 @@
     "nodemon": "^3.1.14"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.0",
     "express": "^5.2.1",
     "helmet": "^8.1.0",
-    "mongoose": "^9.3.3"
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.3.3",
+    "zod": "^4.3.6"
   }
 }
