@@ -38,3 +38,4 @@ O presente repositório abriga o código-fonte referente ao sistema de gestão d
 
 Para fins de validação técnica e análise das requisições documentadas, recomenda-se a importação do diretório postman/collections/Tests em um workspace do aplicativo Postman. Tais coleções contêm cenários pré-configurados, facilitando a testagem integral e padronizada dos módulos de Login, Leads, Produtos e Vendedores.
 222TESTETESTE GI
+teste Luiz 
