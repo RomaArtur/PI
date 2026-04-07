@@ -1,0 +1,16 @@
+$kind: http-request
+url: http://localhost:5000/api/vendedores
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"nome\": \"NomeVendedor\",\r
+
+    \    \"email\": \"emailvendedor@email.com\",\r
+
+    \    \"senha\": \"senha123456\"\r
+
+    }"
+examples: .resources/Registrar Vendedor.resources/examples
+order: 1775407319682

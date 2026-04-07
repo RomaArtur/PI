@@ -1,0 +1,39 @@
+$kind: http-example
+request:
+  url: http://localhost:5000/api/leads
+  method: POST
+response:
+  statusCode: 200
+  statusText: OK
+  body:
+    type: json
+    content: "{\r
+
+      \    \"nome\": \"Nome do Lead\",\r
+
+      \    \"sobrenome\": \"Sobrenome do Lead\",\r
+
+      \    \"email\": \"exemplo@email.com\",\r
+
+      \    \"whatsapp\": \"5511999999999\",\r
+
+      \    \"consentimento\": true,\r
+
+      \    \"interesses\": [\"interesse_1\", \"interesse_2\"],\r
+
+      \    \"dataNascimento\": \"1990-01-01\",\r
+
+      \    \"datasComemorativas\": [\r
+
+      \        {\r
+
+      \            \"nomeEvento\": \"Aniversário de Casamento\",\r
+
+      \            \"data\": \"2026-12-25\"\r
+
+      \        }\r
+
+      \    ]\r
+
+      }"
+order: 1775407449458

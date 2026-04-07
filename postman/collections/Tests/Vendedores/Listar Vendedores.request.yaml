@@ -1,0 +1,4 @@
+$kind: http-request
+url: http://localhost:5000/api/vendedores
+method: GET
+order: 25576299398338
