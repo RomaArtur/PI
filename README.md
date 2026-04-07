@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 Projeto Integrador - UNIVESP
+=======
+<<<<<<< HEAD
+Projeto Integrador - UNIVESP
+  
+  
+=======
+# **Documentação Técnica: Sistema de Gestão \- Projeto Integrador UNIVESP**
+>>>>>>> d7f9a0fa145a1573aca4dc135916c4fa2a62afcd
 
 O presente projeto justifica-se pela necessidade de melhorar a organização e a comunicação de um pequeno empreendimento que realiza vendas ao longo de todo o ano, mas enfrenta dificuldades no gerenciamento de contatos e pedidos, especialmente em períodos sazonais, como datas comemorativas.
 
@@ -49,4 +58,8 @@ A solução busca transformar um processo manual e desorganizado em um sistema d
 
 
 
+<<<<<<< HEAD
 
+=======
+Teste
+>>>>>>> d7f9a0fa145a1573aca4dc135916c4fa2a62afcd
