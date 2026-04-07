@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+Projeto Integrador - UNIVESP
+  
+  
+=======
 # **Documentação Técnica: Sistema de Gestão \- Projeto Integrador UNIVESP**
 
 O presente repositório abriga o código-fonte referente ao sistema de gestão desenvolvido como requisito avaliativo para o Projeto Integrador da Universidade Virtual do Estado de São Paulo (UNIVESP). A arquitetura do software foi estruturada sob o paradigma de separação de responsabilidades, segregando a interface de usuário (Frontend desenvolvido em React/Vite) da lógica de negócios e infraestrutura de dados (Backend implementado em Node.js/Express). O escopo principal da aplicação compreende o gerenciamento centralizado de Vendedores, Leads e Produtos, com ênfase na otimização do monitoramento de eventos diários e no fomento de métricas de conversão.
@@ -40,6 +45,3 @@ Para fins de validação técnica e análise das requisições documentadas, rec
 <<<<<<< Updated upstream
 222TESTETESTE GI
 teste Luiz 
-=======
-TESTE GI
->>>>>>> Stashed changes
