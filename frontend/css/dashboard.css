@@ -1,0 +1,128 @@
+.dashboard-body {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar-header {
+    margin-bottom: 2.5rem;
+}
+
+.sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    background: transparent;
+    text-align: left;
+    padding: 0.875rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius);
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: #eff6ff;
+    color: var(--primary-color);
+}
+
+.nav-item.active {
+    font-weight: 700;
+}
+
+.btn-logout {
+    width: 100%;
+    background-color: #fee2e2;
+    color: var(--danger);
+    padding: 0.75rem;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 2.5rem;
+}
+
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.btn-add {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+}
+
+/* Tabelas */
+.table-container {
+    padding: 0;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    background-color: #f8fafc;
+    padding: 1rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+}
+
+.badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-success { background-color: #dcfce7; color: #166534; }
+.badge-info { background-color: #e0f2fe; color: #075985; }
+
+.btn-action {
+    padding: 0.4rem;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+}
+

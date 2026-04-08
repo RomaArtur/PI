@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Colors */
+  --primary-color: #000000;
+  --primary-hover: #4e4e4e;
+  --secondary-color: #64748b;
+  --bg-color: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --border-color: #e2e8f0;
+
+  /* Spacing & Borders */
+  --radius: 8px;
+  --transition: all 0.2s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Manrope', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+  transition: var(--transition);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Utils */
+.text-center { text-align: center; }
+.mt-2 { margin-top: 1rem; }
+.mb-2 { margin-bottom: 1rem; }
+.text-muted { color: var(--text-muted); }
