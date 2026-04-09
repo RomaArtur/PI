@@ -29,6 +29,7 @@ const whitelist = [
   "http://localhost:5500",
   "http://localhost:5173",
   "https://pi-three-mauve.vercel.app",
+  "https://stylodesigner.vercel.app",
 ];
 
 const corsOptions = {
