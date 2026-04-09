@@ -28,6 +28,7 @@ const whitelist = [
   "http://127.0.0.1:5500",
   "http://localhost:5500",
   "http://localhost:5173",
+  "https://pi-three-mauve.vercel.app",
 ];
 
 const corsOptions = {
@@ -73,8 +74,8 @@ const PORT = process.env.PORT || 5000;
 const HOST = process.env.IP || "0.0.0.0";
 
 app.listen(PORT, HOST, () => {
-      console.log(`Servidor rodando em: http://${HOST}:${PORT}`);
-      console.log(`Endpoints disponíveis em: http://${HOST}:${PORT}/api`);
+  console.log(`Servidor rodando em: http://${HOST}:${PORT}`);
+  console.log(`Endpoints disponíveis em: http://${HOST}:${PORT}/api`);
 });
 
 export default app;
