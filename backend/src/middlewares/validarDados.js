@@ -2,9 +2,9 @@ export const validarDados = (schema) => (req, res, next) => {
   const resultado = schema.safeParse(req.body);
 
   if (!resultado.success) {
-    const errosFormatados = resultado.erro.issues.map((err) => ({
+    const errosFormatados = resultado.error.issues.map((err) => ({
       campo: err.path.join("."),
-      mensagem: err.mensagem,
+      mensagem: err.message,
     }));
 
     return res.status(400).json({

@@ -54,3 +54,98 @@ A solução busca transformar um processo manual e desorganizado em um sistema d
 - Maior eficiência operacional
 - Melhor controle das informações
 - Padronização do atendimento ao cliente
+
+```
+PI
+├─ backend
+│  ├─ eslint.config.mjs
+│  ├─ package.json
+│  └─ src
+│     ├─ config
+│     │  └─ db.js
+│     ├─ controllers
+│     │  ├─ AuthController.js
+│     │  ├─ LeadController.js
+│     │  ├─ ProdutoController.js
+│     │  └─ VendedorController.js
+│     ├─ middlewares
+│     │  ├─ authMiddleware.js
+│     │  └─ validarDados.js
+│     ├─ models
+│     │  ├─ Lead.js
+│     │  ├─ Produto.js
+│     │  └─ Vendedor.js
+│     ├─ routes
+│     │  ├─ authRoutes.js
+│     │  ├─ index.js
+│     │  ├─ leadRoutes.js
+│     │  ├─ produtoRoutes.js
+│     │  └─ vendedorRoutes.js
+│     ├─ server.js
+│     ├─ services
+│     │  └─ leadService.js
+│     ├─ utils
+│     └─ validations
+│        ├─ leadValidation.js
+│        ├─ produtoValidation.js
+│        └─ vendedorValidation.js
+├─ frontend
+│  ├─ assets
+│  │  ├─ icons
+│  │  └─ img
+│  ├─ css
+│  │  ├─ dashboard.css
+│  │  ├─ global.css
+│  │  ├─ landing.css
+│  │  └─ login.css
+│  ├─ dashboard.html
+│  ├─ index.html
+│  ├─ js
+│  │  ├─ api
+│  │  │  └─ client.js
+│  │  ├─ components
+│  │  │  ├─ BrandLogo.js
+│  │  │  ├─ CategoryCard.js
+│  │  │  ├─ DashboardSidebar.js
+│  │  │  ├─ LeadForm.js
+│  │  │  ├─ PublicFooter.js
+│  │  │  └─ PublicHeader.js
+│  │  └─ pages
+│  │     ├─ dashboard.js
+│  │     ├─ index.js
+│  │     └─ login.js
+│  └─ login.html
+├─ postman
+│  ├─ collections
+│  │  └─ Tests
+│  │     ├─ .resources
+│  │     │  └─ definition.yaml
+│  │     ├─ Leads
+│  │     │  ├─ .resources
+│  │     │  │  ├─ Criar Lead.resources
+│  │     │  │  │  └─ examples
+│  │     │  │  │     └─ Criar Lead (Modelo).example.yaml
+│  │     │  │  └─ definition.yaml
+│  │     │  ├─ Buscar Eventos do Dia.request.yaml
+│  │     │  ├─ Buscar Lead por ID.request.yaml
+│  │     │  ├─ Criar Lead.request.yaml
+│  │     │  ├─ Editar Lead.request.yaml
+│  │     │  ├─ Excluir Lead.request.yaml
+│  │     │  └─ Listar Leads.request.yaml
+│  │     ├─ Login.request.yaml
+│  │     └─ Vendedores
+│  │        ├─ .resources
+│  │        │  ├─ definition.yaml
+│  │        │  └─ Registrar Vendedor.resources
+│  │        │     └─ examples
+│  │        │        └─ Registrar Vendedor (Modelo).example.yaml
+│  │        ├─ Buscar Vendedor por ID.request.yaml
+│  │        ├─ Editar Vendedor.request.yaml
+│  │        ├─ Excluir Vendedor.request.yaml
+│  │        ├─ Listar Vendedores.request.yaml
+│  │        └─ Registrar Vendedor.request.yaml
+│  ├─ flows
+│  └─ sdks
+└─ README.md
+
+```

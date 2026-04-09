@@ -6,7 +6,11 @@ class DashboardSidebar extends HTMLElement {
       <aside class="sidebar">
         <div class="sidebar-header">
           <brand-logo></brand-logo>
+          <button type="button" class="sidebar-close" aria-label="Fechar menu">
+            &times;
+          </button>
         </div>
+
         <nav class="sidebar-nav">
           <button class="nav-item active" data-target="section-leads">
             <span>Leads</span>
@@ -15,6 +19,7 @@ class DashboardSidebar extends HTMLElement {
             <span>Produtos</span>
           </button>
         </nav>
+
         <div class="sidebar-footer">
           <button id="btn-logout" class="btn-logout">Sair</button>
         </div>
@@ -32,7 +37,20 @@ class DashboardSidebar extends HTMLElement {
             bubbles: true,
           }),
         );
+        this.dispatchEvent(
+          new CustomEvent("sidebar-close", {
+            bubbles: true,
+          }),
+        );
       });
+    });
+
+    this.querySelector(".sidebar-close").addEventListener("click", () => {
+      this.dispatchEvent(
+        new CustomEvent("sidebar-close", {
+          bubbles: true,
+        }),
+      );
     });
 
     this.querySelector("#btn-logout").addEventListener("click", () => {
@@ -42,4 +60,7 @@ class DashboardSidebar extends HTMLElement {
     });
   }
 }
-customElements.define("dashboard-sidebar", DashboardSidebar);
+
+if (!customElements.get("dashboard-sidebar")) {
+  customElements.define("dashboard-sidebar", DashboardSidebar);
+}

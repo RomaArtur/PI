@@ -8,12 +8,10 @@ export const leadSchemaZod = z.object({
     .string()
     .min(10, "O WhatsApp deve ter DDD e o número (mínimo 10 dígitos)"),
   consentimento: z.boolean().refine((val) => val === true, {
-    mensagem: "O usuário precisa aceitar os termos (consentimento: true)",
+    message: "O usuário precisa aceitar os termos.",
   }),
   interesses: z.array(z.string()).optional(),
-
   dataNascimento: z.coerce.date().optional(),
-
   datasComemorativas: z
     .array(
       z.object({

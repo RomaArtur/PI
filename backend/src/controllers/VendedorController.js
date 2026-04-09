@@ -1,8 +1,33 @@
 import Vendedor from "../models/Vendedor.js";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DEBUG_LOG_PATH = path.resolve(__dirname, "../../..", "debug-5768e2.log");
+const AGENT_DEBUG_ENABLED = process.env.ENABLE_AGENT_DEBUG === "true";
+const agentAppendLog = (payload) => {
+  if (!AGENT_DEBUG_ENABLED) return;
+  try {
+    fs.appendFileSync(DEBUG_LOG_PATH, `${JSON.stringify(payload)}\n`, "utf8");
+  } catch {
+    // ignore
+  }
+};
 
 class VendedorController {
   static registrarVendedor = async (req, res) => {
     try {
+      agentAppendLog({
+        sessionId: "5768e2",
+        runId: "pre-fix",
+        hypothesisId: "H5",
+        location: "backend/src/controllers/VendedorController.js:registrarVendedor",
+        message: "registrarVendedor entry",
+        data: { method: req.method, bodyKeys: Object.keys(req.body || {}) },
+        timestamp: Date.now(),
+      });
       const quantidadeDonos = await Vendedor.countDocuments();
       if (quantidadeDonos >= 1) {
         return res.status(403).json({
@@ -35,6 +60,15 @@ class VendedorController {
 
   static listarVendedores = async (req, res) => {
     try {
+      agentAppendLog({
+        sessionId: "5768e2",
+        runId: "pre-fix",
+        hypothesisId: "H5",
+        location: "backend/src/controllers/VendedorController.js:listarVendedores",
+        message: "listarVendedores entry",
+        data: { method: req.method },
+        timestamp: Date.now(),
+      });
       const vendedores = await Vendedor.find().select("-senha");
       res.status(200).json({ dados: vendedores });
     } catch (erro) {
@@ -48,6 +82,21 @@ class VendedorController {
     try {
       const { id } = req.params;
       const dadosAtualizados = req.body;
+
+      agentAppendLog({
+        sessionId: "5768e2",
+        runId: "pre-fix",
+        hypothesisId: "H6",
+        location: "backend/src/controllers/VendedorController.js:editarVendedor",
+        message: "editarVendedor entry",
+        data: {
+          method: req.method,
+          id,
+          bodyType: typeof dadosAtualizados,
+          bodyKeys: Object.keys(dadosAtualizados || {}),
+        },
+        timestamp: Date.now(),
+      });
 
       const vendedor = await Vendedor.findById(id);
       if (!vendedor) {
@@ -96,6 +145,17 @@ class VendedorController {
   static buscarVendedorPorId = async (req, res) => {
     try {
       const { id } = req.params;
+
+      agentAppendLog({
+        sessionId: "5768e2",
+        runId: "pre-fix",
+        hypothesisId: "H7",
+        location:
+          "backend/src/controllers/VendedorController.js:buscarVendedorPorId",
+        message: "buscarVendedorPorId entry",
+        data: { method: req.method, id },
+        timestamp: Date.now(),
+      });
 
       const vendedor = await Vendedor.findById(id).select("-senha");
 

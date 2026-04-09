@@ -14,7 +14,8 @@ router.post(
   VendedorController.registrarVendedor,
 );
 
-router.get("/:id", checarAutenticacao, VendedorController.editarVendedor);
+router.get("/:id", checarAutenticacao, VendedorController.buscarVendedorPorId);
+router.put("/:id", checarAutenticacao, VendedorController.editarVendedor);
 router.delete("/:id", checarAutenticacao, VendedorController.excluirVendedor);
 
 export default router;

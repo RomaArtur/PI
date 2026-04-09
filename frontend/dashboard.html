@@ -6,105 +6,108 @@
     <title>Painel Administrativo - PI Gestão</title>
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
+    <style>
+        .toolbar { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+        .toolbar input { padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius); flex: 1; }
+        .pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
+        .badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+    </style>
 </head>
 <body class="dashboard-body">
     <dashboard-sidebar></dashboard-sidebar>
 
     <main class="main-content">
         <header class="content-header">
-            <h2 id="welcome-msg">Bem-vindo, Lojista</h2>
-            <div class="header-actions">
-                <span id="user-email" class="text-muted text-sm"></span>
-            </div>
+            <h2 id="welcome-msg">Bem-vindo</h2>
+            <span id="user-email" class="text-muted"></span>
         </header>
 
+        <!-- SEÇÃO LEADS -->
         <section id="section-leads" class="content-section">
             <div class="section-header">
                 <h3>Gestão de Leads</h3>
+                <button class="btn-add" id="btn-add-lead">+ Novo Lead</button>
+            </div>
+            <div class="toolbar">
+                <input type="text" id="search-leads" placeholder="Buscar por nome, e-mail ou WhatsApp...">
             </div>
             <div class="card table-container">
                 <table id="table-leads">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>WhatsApp</th>
-                            <th>E-mail</th>
+                            <th data-sort="nome">Nome <span class="sort-icon"></span></th>
+                            <th data-sort="whatsapp">WhatsApp <span class="sort-icon"></span></th>
+                            <th data-sort="email">E-mail <span class="sort-icon"></span></th>
                             <th>Interesses</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody-leads">
-                    </tbody>
+                    <tbody id="tbody-leads"></tbody>
                 </table>
+            </div>
+            <div class="pagination">
+                <button id="prev-leads" class="btn-action">Anterior</button>
+                <span id="info-leads">Página 1</span>
+                <button id="next-leads" class="btn-action">Próxima</button>
             </div>
         </section>
 
+        <!-- SEÇÃO PRODUTOS -->
         <section id="section-produtos" class="content-section" style="display: none;">
             <div class="section-header">
                 <h3>Catálogo de Produtos</h3>
-                <button class="btn-add">+ Novo Produto</button>
+                <button class="btn-add" id="btn-add-produto">+ Novo Produto</button>
+            </div>
+            <div class="toolbar">
+                <input type="text" id="search-produtos" placeholder="Buscar produto...">
             </div>
             <div class="card table-container">
                 <table id="table-produtos">
                     <thead>
                         <tr>
-                            <th>Nome</th>
-                            <th>Categoria</th>
-                            <th>Preço Base</th>
-                            <th>Prazo (Dias)</th>
-                            <th>Status</th>
+                            <th data-sort="nome">Nome <span class="sort-icon"></span></th>
+                            <th data-sort="precoBase">Preço <span class="sort-icon"></span></th>
+                            <th data-sort="prazoProducaoDias">Prazo <span class="sort-icon"></span></th>
+                            <th data-sort="ativo">Status <span class="sort-icon"></span></th>
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody id="tbody-produtos">
-                    </tbody>
+                    <tbody id="tbody-produtos"></tbody>
                 </table>
+            </div>
+            <div class="pagination">
+                <button id="prev-produtos" class="btn-action">Anterior</button>
+                <span id="info-produtos">Página 1</span>
+                <button id="next-produtos" class="btn-action">Próxima</button>
             </div>
         </section>
     </main>
 
-    <dialog id="modal-produto" class="modal">
+    <dialog id="modal-novo-lead" class="modal">
         <div class="modal-content">
             <header class="modal-header">
-                <h3 id="modal-title">Novo Produto</h3>
-                <button id="close-modal" class="btn-close">&times;</button>
+                <h3 id="modal-title-lead">Novo Lead</h3>
+                <button class="btn-close" onclick="document.getElementById('modal-novo-lead').close()">&times;</button>
             </header>
-            <form id="form-produto">
-                <input type="hidden" id="prod-id" name="id">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="prod-nome">Nome do Produto</label>
-                        <input type="text" id="prod-nome" name="nome" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prod-categoria">Categoria</label>
-                        <input type="text" id="prod-categoria" name="categoria" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prod-preco">Preço Base (R$)</label>
-                        <input type="number" id="prod-preco" name="precoBase" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prod-prazo">Prazo Produção (Dias)</label>
-                        <input type="number" id="prod-prazo" name="prazoProducaoDias" required>
-                    </div>
-                </div>
-                <div class="form-group mt-2">
-                    <label for="prod-descricao">Descrição</label>
-                    <textarea id="prod-descricao" name="descricao" rows="3" required></textarea>
-                </div>
-                <div class="form-group checkbox-group mt-2">
-                    <input type="checkbox" id="prod-ativo" name="ativo" checked>
-                    <label for="prod-ativo">Produto Ativo no Catálogo</label>
-                </div>
-                <footer class="modal-footer mt-2">
-                    <button type="submit" class="btn-primary w-full">Salvar Produto</button>
-                </footer>
-            </form>
+            <lead-form id="component-lead-form"></lead-form>
         </div>
     </dialog>
 
+    <dialog id="modal-produto" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3 id="modal-title-produto">Novo Produto</h3>
+                <button class="btn-close" onclick="document.getElementById('modal-produto').close()">&times;</button>
+            </header>
+            <produto-form id="component-produto-form"></produto-form>
+        </div>
+    </dialog>
+
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js"></script>
     <script type="module" src="js/components/DashboardSidebar.js"></script>
+    <script type="module" src="js/components/LeadForm.js"></script>
+    <script type="module" src="js/components/ProdutoForm.js"></script>
     <script type="module" src="js/pages/dashboard.js"></script>
 </body>
 </html>
