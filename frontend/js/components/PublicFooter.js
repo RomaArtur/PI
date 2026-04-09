@@ -7,13 +7,13 @@ class PublicFooter extends HTMLElement {
       window.location.pathname.endsWith("/");
     const navLinks = isIndexPage
       ? `
-        <a href="#home">Inicio</a>
+        <a href="#home">Início</a>
         <a href="#produtos">Produtos</a>
         <a href="#como-funciona">Como funciona</a>
         <a href="#comunicados">Comunicados</a>
       `
       : `
-        <a href="index.html#home">Inicio</a>
+        <a href="index.html#home">Início</a>
         <a href="index.html#produtos">Produtos</a>
         <a href="index.html#como-funciona">Como funciona</a>
         <a href="index.html#comunicados">Comunicados</a>
@@ -26,12 +26,12 @@ class PublicFooter extends HTMLElement {
             <div class="footer-column footer-column--brand">
               <brand-logo></brand-logo>
               <p class="text-muted footer-copy">
-                Papelaria criativa e design exclusivo para tornar seus momentos e projetos inesqueciveis.
+                Papelaria criativa e design exclusivo para tornar seus momentos e projetos inesquecíveis.
               </p>
             </div>
 
             <div class="footer-column">
-              <h3 class="footer-title">Navegacao</h3>
+              <h3 class="footer-title">Navegação</h3>
               <nav class="footer-links">
                 ${navLinks}
               </nav>
@@ -47,10 +47,10 @@ class PublicFooter extends HTMLElement {
             </div>
 
             <div class="footer-column">
-              <h3 class="footer-title">Endereco e redes</h3>
+              <h3 class="footer-title">Endereço e redes</h3>
               <div class="text-muted footer-links">
                 <span>Rua Exemplo, 123 • Centro</span>
-                <span>Sao Paulo • SP</span>
+                <span>São Paulo • SP</span>
                 <div class="footer-actions">
                   <a class="btn-action" href="https://instagram.com/seuusuario" target="_blank" rel="noopener noreferrer">Instagram</a>
                   <a class="btn-action" href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -61,7 +61,7 @@ class PublicFooter extends HTMLElement {
 
           <div class="footer-bottom">
             <span class="text-muted footer-meta">&copy; ${new Date().getFullYear()} STILO & DESIGNER. Todos os direitos reservados.</span>
-            <span class="text-muted footer-meta">Feito com cuidado • Politica de privacidade</span>
+            <span class="text-muted footer-meta">Feito com cuidado • Política de privacidade</span>
           </div>
         </div>
       </footer>

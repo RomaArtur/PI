@@ -6,7 +6,7 @@ class DashboardSidebar extends HTMLElement {
       <aside class="sidebar">
         <div class="sidebar-header">
           <brand-logo></brand-logo>
-          <button type="button" class="sidebar-close" aria-label="Fechar menu">
+          <button type="button" class="sidebar-close icon-button" aria-label="Fechar menu">
             &times;
           </button>
         </div>

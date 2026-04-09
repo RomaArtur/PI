@@ -5,25 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - PI Gestão</title>
     <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css">
-    <style>
-        .toolbar { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-        .toolbar input { padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius); flex: 1; }
-        .pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; }
-        .badge { padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
-    </style>
 </head>
 <body class="dashboard-body">
-    <dashboard-sidebar></dashboard-sidebar>
+    <dashboard-sidebar id="dashboard-sidebar-shell"></dashboard-sidebar>
+    <button
+        type="button"
+        id="dashboard-sidebar-overlay"
+        class="dashboard-sidebar-overlay"
+        aria-label="Fechar menu lateral"
+    ></button>
 
-    <main class="main-content">
+    <main class="main-content page-shell">
         <header class="content-header">
-            <h2 id="welcome-msg">Bem-vindo</h2>
-            <span id="user-email" class="text-muted"></span>
+            <div class="content-header-main">
+                <button
+                    type="button"
+                    id="dashboard-sidebar-toggle"
+                    class="dashboard-menu-toggle icon-button"
+                    aria-expanded="false"
+                    aria-label="Abrir menu lateral"
+                >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <div class="content-header-copy">
+                    <h2 id="welcome-msg">Bem-vindo</h2>
+                    <span id="user-email" class="text-muted"></span>
+                </div>
+            </div>
         </header>
 
-        <!-- SEÇÃO LEADS -->
         <section id="section-leads" class="content-section">
             <div class="section-header">
                 <h3>Gestão de Leads</h3>
@@ -53,8 +68,7 @@
             </div>
         </section>
 
-        <!-- SEÇÃO PRODUTOS -->
-        <section id="section-produtos" class="content-section" style="display: none;">
+        <section id="section-produtos" class="content-section" hidden>
             <div class="section-header">
                 <h3>Catálogo de Produtos</h3>
                 <button class="btn-add" id="btn-add-produto">+ Novo Produto</button>
@@ -88,7 +102,11 @@
         <div class="modal-content">
             <header class="modal-header">
                 <h3 id="modal-title-lead">Novo Lead</h3>
-                <button class="btn-close" onclick="document.getElementById('modal-novo-lead').close()">&times;</button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-dialog-close="#modal-novo-lead"
+                >&times;</button>
             </header>
             <lead-form id="component-lead-form"></lead-form>
         </div>
@@ -98,7 +116,11 @@
         <div class="modal-content">
             <header class="modal-header">
                 <h3 id="modal-title-produto">Novo Produto</h3>
-                <button class="btn-close" onclick="document.getElementById('modal-produto').close()">&times;</button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-dialog-close="#modal-produto"
+                >&times;</button>
             </header>
             <produto-form id="component-produto-form"></produto-form>
         </div>

@@ -1,4 +1,5 @@
 import { apiFetch } from "../api/client.js";
+import { clearFeedbackState, setFeedbackState } from "../utils/feedback.js";
 
 class ProdutoForm extends HTMLElement {
   connectedCallback() {
@@ -24,12 +25,12 @@ class ProdutoForm extends HTMLElement {
           </div>
 
           <div class="form-group">
-            <label for="prod-preco">Preco Base (R$)</label>
+            <label for="prod-preco">Preço base (R$)</label>
             <input type="number" id="prod-preco" name="precoBase" step="0.01" required>
           </div>
 
           <div class="form-group">
-            <label for="prod-prazo">Prazo Producao (Dias)</label>
+            <label for="prod-prazo">Prazo Produção (dias)</label>
             <input type="number" id="prod-prazo" name="prazoProducaoDias" required>
           </div>
 
@@ -41,7 +42,7 @@ class ProdutoForm extends HTMLElement {
         </div>
 
         <div class="form-group produto-form-description">
-          <label for="prod-descricao">Descricao</label>
+          <label for="prod-descricao">Descrição</label>
           <textarea id="prod-descricao" name="descricao" rows="3" required></textarea>
         </div>
 
@@ -63,7 +64,7 @@ class ProdutoForm extends HTMLElement {
 
           <div class="cropper-layout">
             <div class="cropper-preview">
-              <img id="crop-image" alt="Previa para corte" class="cropper-image">
+              <img id="crop-image" alt="Prévia para corte" class="cropper-image">
             </div>
 
             <div class="cropper-controls">
@@ -109,15 +110,11 @@ class ProdutoForm extends HTMLElement {
   }
 
   setFeedback(message, type) {
-    const feedbackDiv = this.querySelector("#feedback-produto");
-    feedbackDiv.textContent = message;
-    feedbackDiv.className = `form-feedback is-visible is-${type}`;
+    setFeedbackState(this.querySelector("#feedback-produto"), message, type);
   }
 
   clearFeedback() {
-    const feedbackDiv = this.querySelector("#feedback-produto");
-    feedbackDiv.textContent = "";
-    feedbackDiv.className = "form-feedback";
+    clearFeedbackState(this.querySelector("#feedback-produto"));
   }
 
   handleImageSelected(e) {

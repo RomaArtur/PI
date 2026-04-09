@@ -3,68 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>STILO &amp; DESIGNER</title>
     <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/landing.css">
-    <style>
-        html { scroll-behavior: smooth; }
-        
-        .floating-buttons-container {
-            position: fixed;
-            bottom: 3rem; 
-            right: 2rem;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem; 
-        }
-
-        .btn-float {
-            width: 70px; 
-            height: 70px; 
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-
-        .btn-float:hover {
-            transform: scale(1.1);
-        }
-
-        .btn-whatsapp {
-            background-color: #25D366;
-        }
-
-        .btn-instagram {
-            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-        }
-
-        .btn-float svg {
-            width: 40px;
-            height: 40px;
-            fill: white;
-        }
-    </style>
 </head>
 <body>
     <public-header></public-header>
 
-    <main>
+    <main class="page-shell">
         <section id="home" class="hero-section container">
             <h1>Papelaria Criativa e Design Exclusivo</h1>
             <p class="text-muted text-center subtitle">
-                Transforme suas ideias em realidade com os produtos personalizados da STILO & DESIGNER.
+                Transforme suas ideias em realidade com os produtos personalizados da STILO &amp; DESIGNER.
             </p>
             <button id="btn-open-modal" class="btn-primary btn-lg">
                 Solicitar Orçamento
             </button>
         </section>
 
-        <section class="features bg-light">
+        <section class="features bg-light section-shell">
             <div class="container features-grid">
                 <div class="feature-card">
                     <span class="icon">✨</span>
@@ -84,14 +42,14 @@
             </div>
         </section>
 
-        <section id="produtos" class="categories container">
+        <section id="produtos" class="categories container section-shell">
             <h2 class="text-center section-title">Nossos Produtos</h2>
             <div class="category-grid" id="catalog-grid">
                 <!-- Produtos renderizados dinamicamente -->
             </div>
         </section>
 
-        <section id="como-funciona" class="workflow bg-light">
+        <section id="como-funciona" class="workflow bg-light section-shell">
             <div class="container">
                 <h2 class="text-center section-title">Como Funciona</h2>
                 <div class="workflow-steps">
@@ -114,13 +72,13 @@
             </div>
         </section>
 
-        <section id="comunicados" class="container" style="padding: 5rem 0;">
-            <div class="card" style="text-align:center; padding: 2.5rem; max-width: 900px; margin: 0 auto;">
-                <h2 class="section-title" style="margin-bottom: 1rem;">Quer receber comunicados?</h2>
-                <p class="text-muted" style="max-width: 680px; margin: 0 auto 1.5rem;">
-                    Cadastre-se para receber novidades, promoções e avisos de produção/entrega. É rápido e você pode sair quando quiser.
+        <section id="comunicados" class="container comunicados-section section-shell">
+            <div class="card comunicados-card">
+                <h2 class="section-title comunicados-title">Quer receber comunicados?</h2>
+                <p class="text-muted comunicados-copy">
+                    Cadastre-se para receber novidades, promoções e avisos de produção e entrega. É rápido e você pode sair quando quiser.
                 </p>
-                <div style="display:flex; justify-content:center;">
+                <div class="comunicados-actions">
                     <button id="btn-open-lead-cta" class="btn-primary btn-lg" type="button">
                         Quero receber comunicados
                     </button>
@@ -135,11 +93,16 @@
         <div class="modal-content">
             <header class="modal-header">
                 <h3>Fique por dentro</h3>
-                <button class="btn-close" type="button" id="btn-close-lead-modal">&times;</button>
+                <button
+                    class="btn-close"
+                    type="button"
+                    id="btn-close-lead-modal"
+                    data-dialog-close="#modal-lead"
+                >&times;</button>
             </header>
 
-            <p class="text-muted" style="margin-bottom: 1rem;">
-                Se você nos passar seus dados, a gente te mantém informado e te envia comunicados (novidades, promoções e prazos).
+            <p class="text-muted lead-modal-copy">
+                Se você nos passar seus dados, a gente te mantém informado e te envia comunicados sobre novidades, promoções e prazos.
             </p>
 
             <lead-form id="component-lead-form-public" variant="public"></lead-form>

@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/login.css">
 </head>
 <body class="login-body">
-    <public-header style="position: absolute; top: 0; left: 0; width: 100%;"></public-header>
+    <public-header></public-header>
 
-    <main class="login-container">
+    <main class="login-container page-shell">
         <div class="card login-card">
             <header class="login-header">
                 <h1 class="text-center">Login</h1>
@@ -28,7 +29,7 @@
                     <input type="password" id="senha" name="senha" placeholder="••••••••" required autocomplete="current-password">
                 </div>
 
-                <button type="submit" id="btn-login" class="btn-primary">
+                <button type="submit" id="btn-login" class="btn-primary form-submit">
                     Entrar no Sistema
                 </button>
             </form>
@@ -36,7 +37,7 @@
             <div id="login-feedback" class="feedback-msg mt-2 text-center"></div>
 
             <footer class="login-footer mt-2">
-                <a href="index.html" class="text-muted text-sm">&larr; Voltar para o Início</a>
+                <a href="index.html" class="text-muted text-sm">&larr; Voltar para o início</a>
             </footer>
         </div>
     </main>

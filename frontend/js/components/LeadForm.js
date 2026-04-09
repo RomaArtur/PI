@@ -1,4 +1,5 @@
 import { apiFetch } from "../api/client.js";
+import { clearFeedbackState, setFeedbackState } from "../utils/feedback.js";
 
 class LeadForm extends HTMLElement {
   connectedCallback() {
@@ -11,7 +12,7 @@ class LeadForm extends HTMLElement {
 
   get successMsg() {
     return this.isPublic
-      ? "Cadastro concluido! Em breve voce recebera comunicados."
+      ? "Cadastro concluído! Em breve você receberá comunicados."
       : "Dados salvos com sucesso!";
   }
 
@@ -49,7 +50,7 @@ class LeadForm extends HTMLElement {
             ? `
           <label class="form-checkbox text-muted">
             <input type="checkbox" name="consentimento" value="true" required>
-            <span>Concordo em receber comunicados e compartilhar minhas informacoes para contato.</span>
+            <span>Concordo em receber comunicados e compartilhar minhas informações para contato.</span>
           </label>
         `
             : '<input type="hidden" name="consentimento" value="true">'
@@ -73,15 +74,11 @@ class LeadForm extends HTMLElement {
   }
 
   setFeedback(message, type) {
-    const msg = this.querySelector("#lead-msg");
-    msg.textContent = message;
-    msg.className = `form-feedback is-visible is-${type}`;
+    setFeedbackState(this.querySelector("#lead-msg"), message, type);
   }
 
   clearFeedback() {
-    const msg = this.querySelector("#lead-msg");
-    msg.textContent = "";
-    msg.className = "form-feedback";
+    clearFeedbackState(this.querySelector("#lead-msg"));
   }
 
   async handleSubmit(e) {
@@ -115,7 +112,7 @@ class LeadForm extends HTMLElement {
           ? res.dados.erros.map((erro) => erro.mensagem).join(" ")
           : null;
         throw new Error(
-          validationMessage || res.dados?.mensagem || "Erro na operacao",
+          validationMessage || res.dados?.mensagem || "Erro na operação",
         );
       }
     } catch (err) {

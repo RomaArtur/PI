@@ -16,12 +16,12 @@ class PublicHeader extends HTMLElement {
       authTexto = "Painel de Controle";
     } else if (isLoginPage) {
       authHref = "index.html";
-      authTexto = "Inicio";
+      authTexto = "Início";
     }
 
     if (isIndexPage) {
       navLinks = `
-        <a href="#home" class="header-nav-link">Inicio</a>
+        <a href="#home" class="header-nav-link">Início</a>
         <a href="#produtos" class="header-nav-link">Produtos</a>
         <a href="#como-funciona" class="header-nav-link">Como funciona</a>
         <a href="#comunicados" class="header-nav-link">Comunicados</a>
@@ -35,13 +35,13 @@ class PublicHeader extends HTMLElement {
     this.innerHTML = `
       <header class="main-header">
         <div class="container header-container">
-          <a href="index.html" class="header-brand-link" aria-label="Ir para a pagina inicial">
+          <a href="index.html" class="header-brand-link" aria-label="Ir para a página inicial">
             <brand-logo></brand-logo>
           </a>
 
           <button
             type="button"
-            class="header-menu-toggle"
+            class="header-menu-toggle icon-button"
             aria-expanded="false"
             aria-label="Abrir menu"
           >
@@ -62,7 +62,7 @@ class PublicHeader extends HTMLElement {
               <span class="header-nav-title">Menu</span>
               <button
                 type="button"
-                class="header-nav-close"
+                class="header-nav-close icon-button"
                 aria-label="Fechar menu"
               >
                 &times;

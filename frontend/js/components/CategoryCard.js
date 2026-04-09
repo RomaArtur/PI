@@ -1,3 +1,5 @@
+import { escapeHtml } from "../utils/html.js";
+
 class CategoryCard extends HTMLElement {
   connectedCallback() {
     const title = this.getAttribute("title") || "Produto";
@@ -13,20 +15,24 @@ class CategoryCard extends HTMLElement {
         <div class="category-card-media">
           <img
             class="category-card-image"
-            src="${imagem}"
-            alt="${title}"
-            onerror="this.onerror=null;this.src='${fallbackImg}';"
+            src="${escapeHtml(imagem)}"
+            alt="${escapeHtml(title)}"
           >
         </div>
 
         <div class="category-card-body">
-          <span class="badge-category">${category}</span>
-          <h3 class="category-card-title">${title}</h3>
-          <p class="text-muted category-card-description">${description}</p>
+          <span class="badge-category">${escapeHtml(category)}</span>
+          <h3 class="category-card-title">${escapeHtml(title)}</h3>
+          <p class="text-muted category-card-description">${escapeHtml(description)}</p>
           <div class="category-card-price">R$ ${price}</div>
         </div>
       </article>
     `;
+
+    const image = this.querySelector(".category-card-image");
+    image?.addEventListener("error", () => {
+      image.src = fallbackImg;
+    }, { once: true });
   }
 }
 

@@ -1,4 +1,5 @@
 import { apiFetch } from "../api/client.js";
+import { setFeedbackState } from "../utils/feedback.js";
 
 const loginForm = document.getElementById("form-login");
 const feedbackDiv = document.getElementById("login-feedback");
@@ -8,9 +9,7 @@ const loginBtn = document.getElementById("btn-login");
  * Controla a exibição de mensagens de erro ou sucesso
  */
 function showFeedback(message, isError = false) {
-  feedbackDiv.textContent = message;
-  feedbackDiv.style.display = "block";
-  feedbackDiv.style.color = isError ? "var(--danger)" : "var(--success)";
+  setFeedbackState(feedbackDiv, message, isError ? "error" : "success");
 }
 
 /**
@@ -20,7 +19,7 @@ loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   // Estado inicial do carregamento
-  feedbackDiv.style.display = "none";
+  setFeedbackState(feedbackDiv, "");
   loginBtn.disabled = true;
   loginBtn.textContent = "Autenticando...";
 
