@@ -70,10 +70,11 @@ app.post("/__agent_log", (req, res) => {
 app.use("/api", routes);
 
 const PORT = process.env.PORT || 5000;
+const HOST = process.env.IP || "0.0.0.0";
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em: http://localhost:${PORT}`);
-  console.log(`Endpoints disponíveis em: http://localhost:${PORT}/api`);
+app.listen(PORT, HOST, () => {
+      console.log(`Servidor rodando em: http://${HOST}:${PORT}`);
+      console.log(`Endpoints disponíveis em: http://${HOST}:${PORT}/api`);
 });
 
 export default app;

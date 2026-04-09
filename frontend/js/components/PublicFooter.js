@@ -40,7 +40,7 @@ class PublicFooter extends HTMLElement {
             <div class="footer-column">
               <h3 class="footer-title">Contato</h3>
               <div class="text-muted footer-links">
-                <a href="tel:+5511999999999">WhatsApp: (11) 99999-9999</a>
+                <a href="tel:+5511967833244">WhatsApp: +55 (11) 96783-3244</a>
                 <a href="mailto:contato@stiloedesigner.com">contato@stiloedesigner.com</a>
                 <span>Atendimento: Seg-Sex • 09h-18h</span>
               </div>
@@ -49,19 +49,14 @@ class PublicFooter extends HTMLElement {
             <div class="footer-column">
               <h3 class="footer-title">Endereço e redes</h3>
               <div class="text-muted footer-links">
-                <span>Rua Exemplo, 123 • Centro</span>
+                <span>Rua Tomoichi Shimizu, 181</span>
                 <span>São Paulo • SP</span>
-                <div class="footer-actions">
-                  <a class="btn-action" href="https://instagram.com/seuusuario" target="_blank" rel="noopener noreferrer">Instagram</a>
-                  <a class="btn-action" href="https://wa.me/5511999999999" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                </div>
               </div>
             </div>
           </div>
 
           <div class="footer-bottom">
             <span class="text-muted footer-meta">&copy; ${new Date().getFullYear()} STILO & DESIGNER. Todos os direitos reservados.</span>
-            <span class="text-muted footer-meta">Feito com cuidado • Política de privacidade</span>
           </div>
         </div>
       </footer>

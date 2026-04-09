@@ -3,7 +3,7 @@ import { bindDialogCloseButtons } from "../utils/dialogs.js";
 import { escapeHtml } from "../utils/html.js";
 
 const BASE_URL = "http://localhost:5000";
-const WHATSAPP_URL = "https://wa.me/5511999999999";
+const WHATSAPP_URL = "https://wa.me/5511967833244";
 
 document.addEventListener("DOMContentLoaded", () => {
   bindDialogCloseButtons();

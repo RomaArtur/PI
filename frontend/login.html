@@ -1,48 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/design-system.css">
-    <link rel="stylesheet" href="css/login.css">
-</head>
-<body class="login-body">
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/design-system.css" />
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body class="login-body">
     <public-header></public-header>
 
     <main class="login-container page-shell">
-        <div class="card login-card">
-            <header class="login-header">
-                <h1 class="text-center">Login</h1>
-                <p class="text-muted text-center">Acesse o painel administrativo</p>
-            </header>
+      <div class="card login-card">
+        <header class="login-header">
+          <h1 class="text-center">Login</h1>
+          <p class="text-muted text-center">Acesse o painel administrativo</p>
+        </header>
 
-            <form id="form-login">
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" placeholder="seu@email.com" required autocomplete="username">
-                </div>
+        <form id="form-login">
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="seu@email.com"
+              required
+              autocomplete="username"
+            />
+          </div>
 
-                <div class="form-group">
-                    <label for="senha">Senha</label>
-                    <input type="password" id="senha" name="senha" placeholder="••••••••" required autocomplete="current-password">
-                </div>
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              name="senha"
+              placeholder="••••••••"
+              required
+              autocomplete="current-password"
+            />
+          </div>
 
-                <button type="submit" id="btn-login" class="btn-primary form-submit">
-                    Entrar no Sistema
-                </button>
-            </form>
+          <button type="submit" id="btn-login" class="btn-primary form-submit">
+            Entrar no Sistema
+          </button>
+        </form>
 
-            <div id="login-feedback" class="feedback-msg mt-2 text-center"></div>
+        <div id="login-feedback" class="feedback-msg mt-2 text-center"></div>
 
-            <footer class="login-footer mt-2">
-                <a href="index.html" class="text-muted text-sm">&larr; Voltar para o início</a>
-            </footer>
-        </div>
+        <footer class="login-footer mt-2">
+          <a href="index.html" class="text-muted text-sm"
+            >&larr; Voltar para o início</a
+          >
+        </footer>
+      </div>
     </main>
 
     <script type="module" src="js/components/PublicHeader.js"></script>
     <script type="module" src="js/pages/login.js"></script>
-</body>
+  </body>
 </html>

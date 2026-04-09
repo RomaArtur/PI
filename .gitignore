@@ -2,12 +2,14 @@
 node_modules/
 package-lock.json
 
+
 # Variáveis de ambiente e senhas
 .env
 .env.local
 .env.development
 .env.test
 .env.production
+uploads/
 
 # Logs e debug
 logs
