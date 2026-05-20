@@ -118,15 +118,83 @@
 }
 
 .category-card-media {
+  position: relative;
   aspect-ratio: 4 / 3;
   background: #e2e8f0;
   overflow: hidden;
+}
+
+.category-card-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.category-card-track {
+  display: flex;
+  height: 100%;
+  transition: transform 320ms ease;
+}
+
+.category-card-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  height: 100%;
 }
 
 .category-card-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.category-card-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.55);
+  color: #ffffff;
+  font-size: 1.5rem;
+  line-height: 1;
+  z-index: 1;
+}
+
+.category-card-nav:hover {
+  background: rgba(15, 23, 42, 0.75);
+}
+
+.category-card-nav-prev {
+  left: 0.75rem;
+}
+
+.category-card-nav-next {
+  right: 0.75rem;
+}
+
+.category-card-dots {
+  position: absolute;
+  right: 0;
+  bottom: 0.85rem;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  z-index: 1;
+}
+
+.category-card-dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.category-card-dot.is-active {
+  background: #ffffff;
+  transform: scale(1.1);
 }
 
 .category-card-body {
@@ -278,6 +346,11 @@
 
   .btn-lg {
     width: 100%;
+  }
+
+  .category-card-nav {
+    width: 2.2rem;
+    height: 2.2rem;
   }
 
   .comunicados-card {

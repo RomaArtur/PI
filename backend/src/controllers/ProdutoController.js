@@ -47,15 +47,17 @@ const normalizeBodyImages = (value) => {
 };
 
 const buildProdutoImages = (payload = {}, uploadedFiles = [], fallbackImages = []) => {
+  const hasExplicitImages = Object.prototype.hasOwnProperty.call(payload, "imagens");
   const bodyImages = normalizeBodyImages(payload.imagens);
   const uploadedPaths = filesToWebPaths(uploadedFiles);
   const legacyImage =
     typeof payload.imagem === "string" && payload.imagem.trim()
       ? [payload.imagem.trim()]
       : [];
-
-  const imagens = [...bodyImages, ...uploadedPaths, ...legacyImage, ...fallbackImages]
-    .filter(Boolean);
+  const fallback = hasExplicitImages ? [] : fallbackImages;
+  const imagens = [...bodyImages, ...uploadedPaths, ...legacyImage, ...fallback].filter(
+    Boolean,
+  );
   const uniqueImages = [...new Set(imagens)];
 
   return {

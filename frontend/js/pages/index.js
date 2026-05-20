@@ -22,12 +22,17 @@ const renderCatalogStatus = (message, tone = "") => `
 `;
 
 const renderCatalogCard = (produto) => {
-  let imagePath = produto.imagem || produto.imagens?.[0] || "";
-
-  if (imagePath && !imagePath.startsWith("http")) {
+  const rawImages = Array.isArray(produto.imagens) && produto.imagens.length
+    ? produto.imagens
+    : produto.imagem
+      ? [produto.imagem]
+      : [];
+  const resolvedImages = rawImages.map((imagePath) => {
+    if (!imagePath || imagePath.startsWith("http")) return imagePath;
     const cleanPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
-    imagePath = `${MEDIA_BASE_URL}${cleanPath}`;
-  }
+    return `${MEDIA_BASE_URL}${cleanPath}`;
+  });
+  const imagePath = resolvedImages[0] || "";
 
   return `
     <category-card
@@ -35,6 +40,7 @@ const renderCatalogCard = (produto) => {
       price="${escapeHtml(produto.precoBase || 0)}"
       category="${escapeHtml(produto.categoria || "")}"
       description="${escapeHtml(produto.descricao || "")}"
+      images="${escapeHtml(JSON.stringify(resolvedImages))}"
       imagem="${escapeHtml(imagePath)}">
     </category-card>
   `;

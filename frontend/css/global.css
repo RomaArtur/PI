@@ -534,6 +534,54 @@ brand-logo {
   gap: 0.75rem;
 }
 
+.produto-image-manager {
+  margin-top: 1rem;
+}
+
+.produto-image-sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.produto-image-section h4 {
+  margin-bottom: 0.65rem;
+  font-size: 1rem;
+}
+
+.produto-image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.85rem;
+}
+
+.produto-image-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.produto-image-item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.produto-image-caption {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  word-break: break-word;
+}
+
+.produto-image-remove {
+  width: 100%;
+}
+
 .public-footer {
   margin-top: auto;
   border-top: 1px solid var(--border-color);

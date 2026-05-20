@@ -1,5 +1,6 @@
 import { apiFetch } from "../api/client.js";
 import { clearFeedbackState, setFeedbackState } from "../utils/feedback.js";
+import { escapeHtml } from "../utils/html.js";
 
 class ProdutoForm extends HTMLElement {
   connectedCallback() {
@@ -7,6 +8,12 @@ class ProdutoForm extends HTMLElement {
     this._croppedFile = null;
     this._selectedFiles = [];
     this._existingImages = [];
+    this._selectedImageUrls = [];
+    this._mediaBaseUrl =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1"
+        ? "http://localhost:5000"
+        : "https://stylodesigner.alwaysdata.net";
     this.render();
   }
 
@@ -41,6 +48,7 @@ class ProdutoForm extends HTMLElement {
             <input type="file" id="prod-imagem" name="imagens" accept="image/*" multiple>
             <p id="current-img-name" class="form-helper"></p>
             <div id="existing-images" class="form-helper"></div>
+            <div id="produto-image-manager" class="produto-image-manager"></div>
           </div>
         </div>
 
@@ -110,6 +118,22 @@ class ProdutoForm extends HTMLElement {
       if (!this._cropper) return;
       this._cropper.zoomTo(Number(e.target.value));
     });
+
+    this.querySelector("#produto-image-manager").addEventListener("click", (event) => {
+      const trigger = event.target.closest("[data-image-action]");
+      if (!trigger) return;
+
+      const index = Number(trigger.dataset.index || -1);
+      if (trigger.dataset.imageAction === "remove-existing") {
+        this.removeExistingImage(index);
+      }
+
+      if (trigger.dataset.imageAction === "remove-selected") {
+        this.removeSelectedImage(index);
+      }
+    });
+
+    this.renderImageManager();
   }
 
   setFeedback(message, type) {
@@ -118,6 +142,118 @@ class ProdutoForm extends HTMLElement {
 
   clearFeedback() {
     clearFeedbackState(this.querySelector("#feedback-produto"));
+  }
+
+  resolveMediaUrl(imagePath = "") {
+    if (!imagePath) return "";
+    if (imagePath.startsWith("http")) return imagePath;
+    const cleanPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
+    return `${this._mediaBaseUrl}${cleanPath}`;
+  }
+
+  releaseSelectedImageUrls() {
+    this._selectedImageUrls.forEach((url) => URL.revokeObjectURL(url));
+    this._selectedImageUrls = [];
+  }
+
+  renderImageManager() {
+    const manager = this.querySelector("#produto-image-manager");
+    if (!manager) return;
+
+    this.releaseSelectedImageUrls();
+    const selectedItems = this._selectedFiles.map((file) => {
+      const url = URL.createObjectURL(file);
+      this._selectedImageUrls.push(url);
+      return { file, url };
+    });
+
+    manager.innerHTML = `
+      <div class="produto-image-sections">
+        <section class="produto-image-section">
+          <h4>Imagens atuais</h4>
+          <div class="produto-image-grid">
+            ${
+              this._existingImages.length
+                ? this._existingImages
+                    .map(
+                      (image, index) => `
+                        <article class="produto-image-item">
+                          <img src="${escapeHtml(this.resolveMediaUrl(image))}" alt="Imagem atual ${index + 1}">
+                          <button
+                            type="button"
+                            class="btn-action btn-action-danger produto-image-remove"
+                            data-image-action="remove-existing"
+                            data-index="${index}"
+                          >
+                            Remover
+                          </button>
+                        </article>
+                      `,
+                    )
+                    .join("")
+                : '<p class="form-helper">Nenhuma imagem cadastrada.</p>'
+            }
+          </div>
+        </section>
+        <section class="produto-image-section">
+          <h4>Novas imagens</h4>
+          <div class="produto-image-grid">
+            ${
+              selectedItems.length
+                ? selectedItems
+                    .map(
+                      ({ file, url }, index) => `
+                        <article class="produto-image-item">
+                          <img src="${escapeHtml(url)}" alt="${escapeHtml(file.name)}">
+                          <p class="produto-image-caption">${escapeHtml(file.name)}</p>
+                          <button
+                            type="button"
+                            class="btn-action btn-action-danger produto-image-remove"
+                            data-image-action="remove-selected"
+                            data-index="${index}"
+                          >
+                            Remover
+                          </button>
+                        </article>
+                      `,
+                    )
+                    .join("")
+                : '<p class="form-helper">Nenhuma nova imagem selecionada.</p>'
+            }
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
+  removeExistingImage(index) {
+    if (index < 0) return;
+    this._existingImages = this._existingImages.filter((_, itemIndex) => itemIndex !== index);
+    const currentImgName = this.querySelector("#current-img-name");
+    currentImgName.textContent = this._existingImages.length
+      ? `${this._existingImages.length} imagem(ns) já cadastrada(s).`
+      : "Todas as imagens atuais foram removidas.";
+    const existingImages = this.querySelector("#existing-images");
+    existingImages.textContent = this._existingImages.length
+      ? this._existingImages.map((image) => image.split("/").pop()).join(", ")
+      : "";
+    this.renderImageManager();
+  }
+
+  removeSelectedImage(index) {
+    if (index < 0) return;
+    const removed = this._selectedFiles[index];
+    this._selectedFiles = this._selectedFiles.filter((_, itemIndex) => itemIndex !== index);
+    if (removed && this._croppedFile && removed.name === this._croppedFile.name) {
+      this._croppedFile = null;
+    }
+    const currentImgName = this.querySelector("#current-img-name");
+    currentImgName.textContent = this._selectedFiles.length
+      ? `${this._selectedFiles.length} nova(s) imagem(ns) pronta(s) para envio.`
+      : this._existingImages.length
+        ? `${this._existingImages.length} imagem(ns) já cadastrada(s).`
+        : "";
+    this.renderImageManager();
   }
 
   handleImageSelected(e) {
@@ -134,6 +270,7 @@ class ProdutoForm extends HTMLElement {
       if (currentImgName) {
         currentImgName.textContent = `${files.length} imagens selecionadas para envio.`;
       }
+      this.renderImageManager();
       return;
     }
 
@@ -183,6 +320,7 @@ class ProdutoForm extends HTMLElement {
       if (input) input.value = "";
       const currentImgName = this.querySelector("#current-img-name");
       if (currentImgName) currentImgName.textContent = "";
+      this.renderImageManager();
     }
 
     if (modal?.open) modal.close();
@@ -221,6 +359,7 @@ class ProdutoForm extends HTMLElement {
       currentImgName.textContent = `Imagem ajustada: ${this._croppedFile.name}`;
     }
 
+    this.renderImageManager();
     this.closeCropModal(false);
   }
 
@@ -249,6 +388,10 @@ class ProdutoForm extends HTMLElement {
     this._existingImages.forEach((image) => {
       formData.append("imagens", image);
     });
+
+    if (formData.get("id") && !this._existingImages.length && !this._selectedFiles.length) {
+      formData.append("imagens", "");
+    }
 
     const id = formData.get("id");
     const method = id ? "PUT" : "POST";
@@ -309,6 +452,7 @@ class ProdutoForm extends HTMLElement {
       ? this._existingImages.map((image) => image.split("/").pop()).join(", ")
       : "";
 
+    this.renderImageManager();
     this.clearFeedback();
   }
 
@@ -322,8 +466,10 @@ class ProdutoForm extends HTMLElement {
     this._croppedFile = null;
     this._selectedFiles = [];
     this._existingImages = [];
+    this.releaseSelectedImageUrls();
     this.querySelector("#current-img-name").textContent = "";
     this.querySelector("#existing-images").textContent = "";
+    this.renderImageManager();
     this.clearFeedback();
   }
 }
