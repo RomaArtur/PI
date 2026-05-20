@@ -4,6 +4,7 @@ class CategoryCard extends HTMLElement {
   connectedCallback() {
     this._autoRotate = null;
     this._currentIndex = 0;
+
     const title = this.getAttribute("title") || "Produto";
     const rawPrice = Number(this.getAttribute("price") || 0);
     const price = Number.isFinite(rawPrice) ? rawPrice.toFixed(2) : "0.00";
@@ -11,9 +12,8 @@ class CategoryCard extends HTMLElement {
     const description = this.getAttribute("description") || "";
     const imagem = this.getAttribute("imagem") || "";
     const imagesAttr = this.getAttribute("images") || "[]";
-    const fallbackImg = "https://placehold.co/400x300?text=Imagem+indisponivel";
-    let images = [];
 
+    let images = [];
     try {
       images = JSON.parse(imagesAttr);
     } catch {
@@ -22,54 +22,64 @@ class CategoryCard extends HTMLElement {
 
     const safeImages = images.filter(Boolean);
     if (!safeImages.length && imagem) safeImages.push(imagem);
-    if (!safeImages.length) safeImages.push(fallbackImg);
+    const hasImages = safeImages.length > 0;
 
     this.innerHTML = `
       <article class="category-card">
         <div class="category-card-media">
-          <div class="category-card-carousel" data-count="${safeImages.length}">
-            <div class="category-card-track">
-              ${safeImages
-                .map(
-                  (src, index) => `
-                    <div class="category-card-slide" data-index="${index}">
-                      <img
-                        class="category-card-image"
-                        src="${escapeHtml(src)}"
-                        alt="${escapeHtml(`${title} - imagem ${index + 1}`)}"
-                      >
-                    </div>
-                  `,
-                )
-                .join("")}
-            </div>
-            ${
-              safeImages.length > 1
-                ? `
-                  <button type="button" class="category-card-nav category-card-nav-prev" aria-label="Imagem anterior">
-                    &#8249;
-                  </button>
-                  <button type="button" class="category-card-nav category-card-nav-next" aria-label="Próxima imagem">
-                    &#8250;
-                  </button>
-                  <div class="category-card-dots">
+          ${
+            hasImages
+              ? `
+                <div class="category-card-carousel" data-count="${safeImages.length}">
+                  <div class="category-card-track">
                     ${safeImages
                       .map(
-                        (_, index) => `
-                          <button
-                            type="button"
-                            class="category-card-dot${index === 0 ? " is-active" : ""}"
-                            data-index="${index}"
-                            aria-label="Ir para imagem ${index + 1}"
-                          ></button>
+                        (src, index) => `
+                          <div class="category-card-slide" data-index="${index}">
+                            <img
+                              class="category-card-image"
+                              src="${escapeHtml(src)}"
+                              alt="${escapeHtml(`${title} - imagem ${index + 1}`)}"
+                            >
+                          </div>
                         `,
                       )
                       .join("")}
                   </div>
-                `
-                : ""
-            }
-          </div>
+                  ${
+                    safeImages.length > 1
+                      ? `
+                        <button type="button" class="category-card-nav category-card-nav-prev" aria-label="Imagem anterior">
+                          &#8249;
+                        </button>
+                        <button type="button" class="category-card-nav category-card-nav-next" aria-label="Proxima imagem">
+                          &#8250;
+                        </button>
+                        <div class="category-card-dots">
+                          ${safeImages
+                            .map(
+                              (_, index) => `
+                                <button
+                                  type="button"
+                                  class="category-card-dot${index === 0 ? " is-active" : ""}"
+                                  data-index="${index}"
+                                  aria-label="Ir para imagem ${index + 1}"
+                                ></button>
+                              `,
+                            )
+                            .join("")}
+                        </div>
+                      `
+                      : ""
+                  }
+                </div>
+              `
+              : `
+                <div class="category-card-empty-media">
+                  <span>Sem imagem cadastrada</span>
+                </div>
+              `
+          }
         </div>
 
         <div class="category-card-body">
@@ -85,7 +95,11 @@ class CategoryCard extends HTMLElement {
       image.addEventListener(
         "error",
         () => {
-          image.src = fallbackImg;
+          const slide = image.closest(".category-card-slide");
+          if (slide) {
+            slide.innerHTML =
+              '<div class="category-card-empty-media"><span>Sem imagem cadastrada</span></div>';
+          }
         },
         { once: true },
       );
