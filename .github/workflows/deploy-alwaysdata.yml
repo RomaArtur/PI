@@ -1,0 +1,119 @@
+name: Deploy AlwaysData
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-alwaysdata-main
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate required secrets
+        env:
+          ALWAYSDATA_HOST: ${{ secrets.ALWAYSDATA_HOST }}
+          ALWAYSDATA_SSH_USER: ${{ secrets.ALWAYSDATA_SSH_USER }}
+          ALWAYSDATA_SSH_KEY: ${{ secrets.ALWAYSDATA_SSH_KEY }}
+          ALWAYSDATA_PROJECT_PATH: ${{ secrets.ALWAYSDATA_PROJECT_PATH }}
+          ALWAYSDATA_SITE_ID: ${{ secrets.ALWAYSDATA_SITE_ID }}
+          ALWAYSDATA_ACCOUNT: ${{ secrets.ALWAYSDATA_ACCOUNT }}
+          ALWAYSDATA_API_TOKEN: ${{ secrets.ALWAYSDATA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          required=(
+            ALWAYSDATA_HOST
+            ALWAYSDATA_SSH_USER
+            ALWAYSDATA_SSH_KEY
+            ALWAYSDATA_PROJECT_PATH
+            ALWAYSDATA_SITE_ID
+            ALWAYSDATA_ACCOUNT
+            ALWAYSDATA_API_TOKEN
+          )
+          for key in "${required[@]}"; do
+            if [ -z "${!key:-}" ]; then
+              echo "Secret ausente: $key" >&2
+              exit 1
+            fi
+          done
+
+      - name: Prepare SSH
+        env:
+          ALWAYSDATA_HOST: ${{ secrets.ALWAYSDATA_HOST }}
+          ALWAYSDATA_SSH_KEY: ${{ secrets.ALWAYSDATA_SSH_KEY }}
+          ALWAYSDATA_SSH_PORT: ${{ secrets.ALWAYSDATA_SSH_PORT }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$ALWAYSDATA_SSH_KEY" > "$HOME/.ssh/alwaysdata"
+          chmod 600 "$HOME/.ssh/alwaysdata"
+          port="${ALWAYSDATA_SSH_PORT:-22}"
+          ssh-keyscan -p "$port" -H "$ALWAYSDATA_HOST" >> "$HOME/.ssh/known_hosts"
+
+      - name: Sync project files
+        env:
+          ALWAYSDATA_HOST: ${{ secrets.ALWAYSDATA_HOST }}
+          ALWAYSDATA_SSH_USER: ${{ secrets.ALWAYSDATA_SSH_USER }}
+          ALWAYSDATA_SSH_PORT: ${{ secrets.ALWAYSDATA_SSH_PORT }}
+          ALWAYSDATA_PROJECT_PATH: ${{ secrets.ALWAYSDATA_PROJECT_PATH }}
+        run: |
+          set -euo pipefail
+          port="${ALWAYSDATA_SSH_PORT:-22}"
+          ssh -i "$HOME/.ssh/alwaysdata" -p "$port" "$ALWAYSDATA_SSH_USER@$ALWAYSDATA_HOST" "mkdir -p '$ALWAYSDATA_PROJECT_PATH'"
+          rsync -az --delete \
+            --exclude ".git/" \
+            --exclude ".github/" \
+            --exclude "node_modules/" \
+            --exclude "uploads/" \
+            --exclude "Desktop.ini" \
+            -e "ssh -i $HOME/.ssh/alwaysdata -p $port" \
+            ./ "$ALWAYSDATA_SSH_USER@$ALWAYSDATA_HOST:$ALWAYSDATA_PROJECT_PATH/"
+
+      - name: Install backend dependencies
+        env:
+          ALWAYSDATA_HOST: ${{ secrets.ALWAYSDATA_HOST }}
+          ALWAYSDATA_SSH_USER: ${{ secrets.ALWAYSDATA_SSH_USER }}
+          ALWAYSDATA_SSH_PORT: ${{ secrets.ALWAYSDATA_SSH_PORT }}
+          ALWAYSDATA_PROJECT_PATH: ${{ secrets.ALWAYSDATA_PROJECT_PATH }}
+        run: |
+          set -euo pipefail
+          port="${ALWAYSDATA_SSH_PORT:-22}"
+          ssh -i "$HOME/.ssh/alwaysdata" -p "$port" "$ALWAYSDATA_SSH_USER@$ALWAYSDATA_HOST" "\
+            set -euo pipefail; \
+            cd '$ALWAYSDATA_PROJECT_PATH/backend'; \
+            npm install --omit=dev \
+          "
+
+      - name: Restart AlwaysData site
+        env:
+          ALWAYSDATA_SITE_ID: ${{ secrets.ALWAYSDATA_SITE_ID }}
+          ALWAYSDATA_ACCOUNT: ${{ secrets.ALWAYSDATA_ACCOUNT }}
+          ALWAYSDATA_API_TOKEN: ${{ secrets.ALWAYSDATA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error \
+            --request POST \
+            --basic \
+            --user "${ALWAYSDATA_API_TOKEN} account=${ALWAYSDATA_ACCOUNT}:" \
+            "https://api.alwaysdata.com/v1/site/${ALWAYSDATA_SITE_ID}/restart/"
+
+      - name: Deployment summary
+        env:
+          ALWAYSDATA_PROJECT_PATH: ${{ secrets.ALWAYSDATA_PROJECT_PATH }}
+        run: |
+          {
+            echo "## Deploy concluido"
+            echo ""
+            echo "- Destino: \`${ALWAYSDATA_PROJECT_PATH}\`"
+            echo "- Branch: \`${GITHUB_REF_NAME}\`"
+            echo "- Commit: \`${GITHUB_SHA}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

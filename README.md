@@ -191,6 +191,19 @@ Fluxo recomendado no Postman:
 - `apiBaseUrl = https://stylodesigner.alwaysdata.net/api`
 - `uploadsBaseUrl = https://stylodesigner.alwaysdata.net/uploads`
 
+## Deploy automatizado no AlwaysData
+
+O repositório agora inclui um workflow do GitHub Actions em [deploy-alwaysdata.yml](/C:/Users/Artur/Documents/Dev/PI/.github/workflows/deploy-alwaysdata.yml).
+
+Esse workflow:
+
+1. roda em `push` para `main`
+2. sincroniza o projeto no AlwaysData via SSH/`rsync`
+3. executa `npm install --omit=dev` em `backend/`
+4. reinicia o site Node.js pela API do AlwaysData
+
+Os secrets necessários estão documentados em [alwaysdata-secrets.md](/C:/Users/Artur/Documents/Dev/PI/.github/alwaysdata-secrets.md).
+
 ## Observacoes
 
 - A rota de login real e `/api/login`, nao `/api/auth/login`.
