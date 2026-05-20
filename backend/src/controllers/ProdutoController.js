@@ -198,15 +198,23 @@ class ProdutoController {
       const payload = { ...req.body };
       const shouldClearImages =
         payload.clearImages === true || payload.clearImages === "true";
+      const uploadedFiles = req.uploadedProdutoFiles || [];
+      const explicitImages = normalizeBodyImages(payload.imagens);
       delete payload.clearImages;
-      Object.assign(
-        payload,
-        buildProdutoImages(
+
+      if (shouldClearImages && !uploadedFiles.length && !explicitImages.length) {
+        payload.imagem = "";
+        payload.imagens = [];
+      } else {
+        Object.assign(
           payload,
-          req.uploadedProdutoFiles,
-          shouldClearImages || req.uploadedProdutoFiles?.length ? [] : oldImagens,
-        ),
-      );
+          buildProdutoImages(
+            payload,
+            uploadedFiles,
+            shouldClearImages || uploadedFiles.length ? [] : oldImagens,
+          ),
+        );
+      }
 
       const produtoAtualizado = await Produto.findByIdAndUpdate(id, payload, {
         returnDocument: "after",
@@ -218,7 +226,7 @@ class ProdutoController {
 
       await syncMediaAssets({
         produtoId: produtoAtualizado._id,
-        uploadedFiles: req.uploadedProdutoFiles,
+        uploadedFiles,
       });
 
       const removedImages = oldImagens.filter(
