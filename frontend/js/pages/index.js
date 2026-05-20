@@ -2,7 +2,11 @@ import { apiFetch } from "../api/client.js";
 import { bindDialogCloseButtons } from "../utils/dialogs.js";
 import { escapeHtml } from "../utils/html.js";
 
-const BASE_URL = "http://localhost:5000";
+const MEDIA_BASE_URL =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
+    ? "http://localhost:5000"
+    : "https://stylodesigner.alwaysdata.net";
 const WHATSAPP_URL = "https://wa.me/5511967833244";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,7 +26,7 @@ const renderCatalogCard = (produto) => {
 
   if (imagePath && !imagePath.startsWith("http")) {
     const cleanPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;
-    imagePath = `${BASE_URL}${cleanPath}`;
+    imagePath = `${MEDIA_BASE_URL}${cleanPath}`;
   }
 
   return `
