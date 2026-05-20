@@ -22,8 +22,9 @@ const renderCatalogStatus = (message, tone = "") => `
 `;
 
 const renderCatalogCard = (produto) => {
-  const rawImages = Array.isArray(produto.imagens) && produto.imagens.length
-    ? produto.imagens
+  const hasGalleryField = Array.isArray(produto.imagens);
+  const rawImages = hasGalleryField
+    ? produto.imagens.filter(Boolean)
     : produto.imagem
       ? [produto.imagem]
       : [];
