@@ -99,6 +99,7 @@ class ProdutoController {
       });
 
       const payload = { ...req.body };
+      delete payload.clearImages;
       Object.assign(payload, buildProdutoImages(payload, req.uploadedProdutoFiles));
 
       const novoProduto = await Produto.create(payload);
@@ -176,12 +177,15 @@ class ProdutoController {
           : [];
 
       const payload = { ...req.body };
+      const shouldClearImages =
+        payload.clearImages === true || payload.clearImages === "true";
+      delete payload.clearImages;
       Object.assign(
         payload,
         buildProdutoImages(
           payload,
           req.uploadedProdutoFiles,
-          req.uploadedProdutoFiles?.length ? [] : oldImagens,
+          shouldClearImages || req.uploadedProdutoFiles?.length ? [] : oldImagens,
         ),
       );
 

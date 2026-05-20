@@ -389,8 +389,11 @@ class ProdutoForm extends HTMLElement {
       formData.append("imagens", image);
     });
 
-    if (formData.get("id") && !this._existingImages.length && !this._selectedFiles.length) {
-      formData.append("imagens", "");
+    if (formData.get("id")) {
+      formData.append(
+        "clearImages",
+        !this._existingImages.length && !this._selectedFiles.length ? "true" : "false",
+      );
     }
 
     const id = formData.get("id");
