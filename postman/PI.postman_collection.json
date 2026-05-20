@@ -1,0 +1,446 @@
+{
+  "info": {
+    "_postman_id": "4f83a49b-8635-4f7f-a653-7bf25ce50001",
+    "name": "PI API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colecao completa da API PI para homolog local e producao."
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{apiBaseUrl}}/health",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Verifica a disponibilidade da API, do MongoDB e da pasta de uploads."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', function () { pm.response.to.have.status(200); });",
+                  "const data = pm.response.json();",
+                  "if (data.token) { pm.environment.set('token', data.token); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@teste.com\",\n  \"senha\": \"123456\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{apiBaseUrl}}/login",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Produtos",
+      "item": [
+        {
+          "name": "Listar Produtos Publico",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{apiBaseUrl}}/produtos",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["produtos"]
+            }
+          }
+        },
+        {
+          "name": "Listar Produtos Admin",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{apiBaseUrl}}/produtos?admin=true&page=1&limit=10",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["produtos"],
+              "query": [
+                { "key": "admin", "value": "true" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar Produto com Imagem",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const data = pm.response.json();",
+                  "if (data?.dados?._id) { pm.environment.set('produtoId', data.dados._id); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "nome", "value": "Caderno Premium", "type": "text" },
+                { "key": "categoria", "value": "Papelaria", "type": "text" },
+                { "key": "precoBase", "value": "49.9", "type": "text" },
+                { "key": "prazoProducaoDias", "value": "7", "type": "text" },
+                { "key": "descricao", "value": "Produto de teste com galeria de imagens.", "type": "text" },
+                { "key": "imagem", "type": "file", "src": "{{productImagePath}}" }
+              ]
+            },
+            "url": {
+              "raw": "{{apiBaseUrl}}/produtos",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["produtos"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Produto e Manter Galeria",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "nome", "value": "Caderno Premium Atualizado", "type": "text" },
+                { "key": "categoria", "value": "Papelaria Criativa", "type": "text" },
+                { "key": "precoBase", "value": "59.9", "type": "text" },
+                { "key": "prazoProducaoDias", "value": "9", "type": "text" },
+                { "key": "descricao", "value": "Produto atualizado mantendo parte da galeria existente.", "type": "text" },
+                { "key": "imagens", "value": "/uploads/exemplo-manter.jpg", "type": "text" },
+                { "key": "imagens", "type": "file", "src": "{{galleryImagePath}}" }
+              ]
+            },
+            "url": {
+              "raw": "{{apiBaseUrl}}/produtos/{{produtoId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["produtos", "{{produtoId}}"]
+            },
+            "description": "Repita a chave `imagens` como texto para manter URLs existentes e como arquivo para adicionar novas imagens."
+          }
+        },
+        {
+          "name": "Excluir Produto",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": {
+              "raw": "{{apiBaseUrl}}/produtos/{{produtoId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["produtos", "{{produtoId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Midia",
+      "item": [
+        {
+          "name": "Listar Biblioteca de Midia",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": {
+              "raw": "{{apiBaseUrl}}/media",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["media"]
+            }
+          }
+        },
+        {
+          "name": "Enviar Imagens para Biblioteca",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const data = pm.response.json();",
+                  "if (data?.dados?.[0]?._id) { pm.environment.set('mediaId', data.dados[0]._id); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "imagens", "type": "file", "src": "{{galleryImagePath}}" }
+              ]
+            },
+            "url": {
+              "raw": "{{apiBaseUrl}}/media",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["media"]
+            }
+          }
+        },
+        {
+          "name": "Excluir Midia",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": {
+              "raw": "{{apiBaseUrl}}/media/{{mediaId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["media", "{{mediaId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leads",
+      "item": [
+        {
+          "name": "Criar Lead Publico",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', function () { pm.response.to.have.status(201); });",
+                  "const data = pm.response.json();",
+                  "if (data?.dados?._id) { pm.environment.set('leadId', data.dados._id); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria\",\n  \"sobrenome\": \"Silva\",\n  \"email\": \"maria.silva@example.com\",\n  \"whatsapp\": \"11999999999\",\n  \"consentimento\": true,\n  \"interesses\": [\"Convites\", \"Canecas\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{apiBaseUrl}}/leads",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["leads"]
+            }
+          }
+        },
+        {
+          "name": "Listar Leads",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": {
+              "raw": "{{apiBaseUrl}}/leads?page=1&limit=10&sort=createdAt&order=desc",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["leads"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" },
+                { "key": "sort", "value": "createdAt" },
+                { "key": "order", "value": "desc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar Lead por ID",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": {
+              "raw": "{{apiBaseUrl}}/leads/{{leadId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["leads", "{{leadId}}"]
+            }
+          }
+        },
+        {
+          "name": "Editar Lead",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria\",\n  \"sobrenome\": \"Silva Souza\",\n  \"email\": \"maria.souza@example.com\",\n  \"whatsapp\": \"11988888888\",\n  \"consentimento\": true,\n  \"interesses\": [\"Convites\", \"Canecas\", \"Agendas\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{apiBaseUrl}}/leads/{{leadId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["leads", "{{leadId}}"]
+            }
+          }
+        },
+        {
+          "name": "Buscar Eventos do Dia",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{apiBaseUrl}}/leads/hoje",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["leads", "hoje"]
+            }
+          }
+        },
+        {
+          "name": "Excluir Lead",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": {
+              "raw": "{{apiBaseUrl}}/leads/{{leadId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["leads", "{{leadId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vendedores",
+      "item": [
+        {
+          "name": "Registrar Dono/Vendedor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const data = pm.response.json();",
+                  "if (data?.dados?._id) { pm.environment.set('vendedorId', data.dados._id); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Admin PI\",\n  \"email\": \"admin@teste.com\",\n  \"senha\": \"123456\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{apiBaseUrl}}/vendedores",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["vendedores"]
+            },
+            "description": "Use apenas no primeiro cadastro. O sistema aceita somente um dono inicial."
+          }
+        },
+        {
+          "name": "Listar Vendedores",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": {
+              "raw": "{{apiBaseUrl}}/vendedores",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["vendedores"]
+            }
+          }
+        },
+        {
+          "name": "Buscar Vendedor por ID",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "GET",
+            "url": {
+              "raw": "{{apiBaseUrl}}/vendedores/{{vendedorId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["vendedores", "{{vendedorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Editar Vendedor",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Admin PI Atualizado\",\n  \"email\": \"admin@teste.com\",\n  \"senha\": \"123456\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{apiBaseUrl}}/vendedores/{{vendedorId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["vendedores", "{{vendedorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Excluir Vendedor",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+            "method": "DELETE",
+            "url": {
+              "raw": "{{apiBaseUrl}}/vendedores/{{vendedorId}}",
+              "host": ["{{apiBaseUrl}}"],
+              "path": ["vendedores", "{{vendedorId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "apiBaseUrl", "value": "http://localhost:5000/api" },
+    { "key": "uploadsBaseUrl", "value": "http://localhost:5000/uploads" },
+    { "key": "token", "value": "" },
+    { "key": "produtoId", "value": "" },
+    { "key": "mediaId", "value": "" },
+    { "key": "leadId", "value": "" },
+    { "key": "vendedorId", "value": "" },
+    { "key": "productImagePath", "value": "" },
+    { "key": "galleryImagePath", "value": "" }
+  ]
+}

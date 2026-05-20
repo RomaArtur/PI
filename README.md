@@ -1,114 +1,198 @@
-# 📦 PI - Plataforma de Gestão para Papelaria Criativa
+# PI - Plataforma de Gestao para Papelaria Criativa
 
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+Plataforma para captacao de leads, gestao de produtos e administracao de vendedores. O projeto tem landing page publica, dashboard administrativo, autenticacao JWT e upload de imagens com galeria por produto.
 
-Plataforma completa para gerenciamento de uma papelaria criativa, desenvolvida como projeto integrador do Bacharelado em Tecnologia da Informação (UNIVESP). Permite captação de leads, administração de produtos e vendedores, com painel administrativo e autenticação segura.
+## Links atuais
 
-**🔗 Deploys ativos:**
-- **Front-end:** [stylodesigner.vercel.app/index.html](https://stylodesigner.vercel.app/index.html)
-- **API Back-end:** [stylodesigner.alwaysdata.net/api](https://stylodesigner.alwaysdata.net/api)
+- Front-end de producao: [https://stylodesigner.vercel.app/index.html](https://stylodesigner.vercel.app/index.html)
+- API de producao: [https://stylodesigner.alwaysdata.net/api](https://stylodesigner.alwaysdata.net/api)
+- Uploads de producao: [https://stylodesigner.alwaysdata.net/uploads](https://stylodesigner.alwaysdata.net/uploads)
 
----
+## Funcionalidades
 
-## ✨ Funcionalidades Principais
+- Landing page publica com catalogo de produtos.
+- Cards de produto com multiplas imagens em carrossel, autoplay e navegacao por setas.
+- Dashboard com CRUD de produtos, leads e vendedores.
+- Produto com galeria de imagens, remocao de imagens existentes e substituicao por novas imagens.
+- Biblioteca de midia no backend para rastrear arquivos enviados.
+- Validacao de dados com Zod.
+- Autenticacao de areas administrativas com JWT.
 
-- **Landing Page:** Página institucional para apresentação da marca e captação de leads.
-- **Painel Administrativo (Dashboard):**
-  - CRUD completo de produtos (com upload de imagens).
-  - CRUD de leads (com busca textual e paginação).
-  - Cadastro e gerenciamento de vendedores.
-  - Visualização de aniversariantes do dia.
-- **Autenticação JWT:** Proteção de rotas administrativas e identidade de vendedores.
-- **Validação de dados:** Todas as entradas são validadas com Zod.
-- **Segurança:** Headers protegidos com Helmet, CORS configurado e boas práticas de API REST.
+## Stack
 
----
+- Backend: Node.js, Express 5, MongoDB/Mongoose, Multer, Zod, JWT, Helmet, CORS.
+- Frontend: HTML, CSS e JavaScript em componentes nativos.
+- Testes manuais/API: Postman.
 
-## 🚀 Começando
+## Estrutura do projeto
 
-Siga as instruções abaixo para rodar o projeto localmente.
+```text
+backend/
+  src/
+frontend/
+postman/
+```
 
-### Pré-requisitos
+## Como rodar localmente
 
-- [Node.js 18+](https://nodejs.org/)
-- [MongoDB 6+](https://www.mongodb.com/try/download/community) (instalado localmente ou via MongoDB Atlas)
-- [Git](https://git-scm.com/)
+### 1. Backend
 
-### Configuração do Ambiente
+```bash
+cd backend
+npm install
+```
 
-#### 1. Clone o repositório:
+Crie o arquivo `backend/.env` com um conteudo parecido com este:
 
-    git clone https://github.com/RomaArtur/PI.git
-    cd PI
+```env
+PORT=5000
+IP=0.0.0.0
+MONGODB_URI=mongodb://localhost:27017/papelaria
+ENABLE_AGENT_DEBUG=false
+```
 
-#### 2. Instale as dependências:
+Suba a API:
 
-    npm install
+```bash
+npm run dev
+```
 
-#### 3. Crie um arquivo `.env` na raiz com o seguinte conteúdo:
+API local:
 
-    # Servidor
-    PORT=3000
-    NODE_ENV=development
+- `http://localhost:5000/api`
+- uploads locais: `http://localhost:5000/uploads`
 
-    # Banco de dados
-    MONGODB_URI=mongodb://localhost:27017/papelaria
+### 2. Frontend
 
-    # JWT
-    JWT_SECRET=sua_chave_secreta_aqui
-    JWT_EXPIRES_IN=7d
+Sirva a pasta `frontend/` com Live Server, Vite static preview ou qualquer servidor HTTP simples. Em desenvolvimento, o frontend ja aponta para `http://localhost:5000/api` quando aberto em `localhost` ou `127.0.0.1`.
 
-#### 4. Inicie o servidor:
+Exemplo com VS Code Live Server:
 
-    npm run dev
+- abra `frontend/index.html`
+- abra `frontend/dashboard.html`
 
-#### 5. Acesse a API em `http://localhost:3000`. O front-end (se rodando localmente) deve apontar para essa URL.
+## Rotas principais
 
----
+### Infra
 
-## 📚 Documentação da API
+| Metodo | Rota | Auth | Descricao |
+| --- | --- | --- | --- |
+| GET | `/api` | Nao | Health basico da API |
+| GET | `/api/health` | Nao | Estado da API, Mongo e pasta de uploads |
 
-#### A coleção do **Postman** está disponível na pasta `postman/`. Importe o arquivo para testar todos os endpoints interativamente.
+### Auth
 
-Principais rotas:
+| Metodo | Rota | Auth | Descricao |
+| --- | --- | --- | --- |
+| POST | `/api/login` | Nao | Login do vendedor/dono e retorno do token JWT |
 
-| Método | Rota                  | Descrição                    | Autenticação |
-|--------|-----------------------|------------------------------|--------------|
-| POST   | `/api/auth/login`     | Login de vendedor            | Não          |
-| GET    | `/api/leads`          | Listar leads (com paginação) | Sim (JWT)    |
-| POST   | `/api/leads`          | Criar novo lead (público)    | Não          |
-| GET    | `/api/produtos`       | Listar produtos              | Não          |
-| POST   | `/api/produtos`       | Cadastrar produto            | Sim (JWT)    |
-| PUT    | `/api/produtos/:id`   | Atualizar produto            | Sim (JWT)    |
-| DELETE | `/api/produtos/:id`   | Remover produto              | Sim (JWT)    |
+### Produtos
 
----
+| Metodo | Rota | Auth | Descricao |
+| --- | --- | --- | --- |
+| GET | `/api/produtos` | Nao | Lista produtos ativos para o catalogo |
+| GET | `/api/produtos?admin=true` | Nao | Lista produtos para administracao |
+| POST | `/api/produtos` | Sim | Cria produto com `multipart/form-data` |
+| PUT | `/api/produtos/:id` | Sim | Atualiza produto e gerencia galeria |
+| DELETE | `/api/produtos/:id` | Sim | Exclui produto e arquivos associados |
 
-## 🛠️ Tecnologias Utilizadas
+Campos aceitos no cadastro/edicao de produto:
 
-- **Back-end:** Node.js, Express 5, Mongoose (MongoDB), JWT, Zod, Multer, Helmet.
-- **Front-end:** HTML5, CSS3, JavaScript (componentizado), implantado no Vercel.
-- **Ferramentas:** Postman, Git, GitHub.
+- `nome`
+- `categoria`
+- `precoBase`
+- `prazoProducaoDias`
+- `descricao`
+- `imagem` para uma capa enviada como arquivo
+- `imagens` para multiplos arquivos ou URLs ja existentes mantidas na galeria
 
----
+### Midia
 
-## 📸 Screenshots
+| Metodo | Rota | Auth | Descricao |
+| --- | --- | --- | --- |
+| GET | `/api/media` | Sim | Lista itens da biblioteca de midia |
+| POST | `/api/media` | Sim | Envia imagens para a biblioteca com `imagens[]` |
+| DELETE | `/api/media/:id` | Sim | Remove item da biblioteca e arquivo fisico |
 
-<img width="1912" height="948" alt="image" src="https://github.com/user-attachments/assets/797ab8e9-1ff9-4862-964d-e46941b730a7" />
-<img width="1912" height="948" alt="image" src="https://github.com/user-attachments/assets/282e8083-8c22-4751-9ea7-f56cae8de1dd" />
-<img width="1912" height="948" alt="image" src="https://github.com/user-attachments/assets/8577bf92-8aa8-4d2e-8e2b-8e00131371a7" />
+### Leads
 
----
+| Metodo | Rota | Auth | Descricao |
+| --- | --- | --- | --- |
+| GET | `/api/leads` | Sim | Lista leads com paginacao, busca e ordenacao |
+| POST | `/api/leads` | Nao | Cria lead publico |
+| GET | `/api/leads/hoje` | Nao | Busca eventos/aniversarios do dia |
+| GET | `/api/leads/:id` | Sim | Busca um lead |
+| PUT | `/api/leads/:id` | Sim | Atualiza um lead |
+| DELETE | `/api/leads/:id` | Sim | Remove um lead |
 
-## 📌 Status do Projeto
+### Vendedores
 
-✅ **MVP funcional:** entregue como projeto integrador.  
-⏳ **Próximos passos:** (em planejamento): migração do front-end para React, adição de testes automatizados e disparo automatizado de mensagens com N8N. 
+| Metodo | Rota | Auth | Descricao |
+| --- | --- | --- | --- |
+| GET | `/api/vendedores` | Sim | Lista vendedores |
+| POST | `/api/vendedores` | Nao | Cadastra o dono/vendedor inicial |
+| GET | `/api/vendedores/:id` | Sim | Busca um vendedor |
+| PUT | `/api/vendedores/:id` | Sim | Atualiza um vendedor |
+| DELETE | `/api/vendedores/:id` | Sim | Remove um vendedor |
 
----
+## Produtos e imagens
+
+### Catalogo publico
+
+- O card do produto suporta multiplas imagens.
+- O catalogo usa a primeira imagem como slide inicial.
+- Se o produto tiver mais de uma imagem, o card mostra:
+  - setas de navegacao
+  - indicadores
+  - autoplay automatico
+
+### Dashboard
+
+No formulario de produto agora e possivel:
+
+- selecionar varias imagens novas
+- remover imagens atuais antes de salvar
+- remover imagens novas antes do envio
+- manter parte da galeria e substituir o resto
+
+## Validacoes importantes
+
+- `descricao` do produto: minimo de 10 caracteres.
+- `nome` do produto: minimo de 3 caracteres.
+- `categoria` do produto: minimo de 2 caracteres.
+- `precoBase`: numero positivo.
+- `prazoProducaoDias`: inteiro maior ou igual a 0.
+
+## Postman
+
+Os arquivos recomendados para testes ficam em `postman/`:
+
+- [PI.postman_collection.json](/C:/Users/Artur/Documents/Dev/PI/postman/PI.postman_collection.json)
+- [PI.local.postman_environment.json](/C:/Users/Artur/Documents/Dev/PI/postman/PI.local.postman_environment.json)
+- [PI.producao.postman_environment.json](/C:/Users/Artur/Documents/Dev/PI/postman/PI.producao.postman_environment.json)
+- [README.md](/C:/Users/Artur/Documents/Dev/PI/postman/README.md)
+
+Fluxo recomendado no Postman:
+
+1. Importar a collection e um dos environments.
+2. Rodar `Health > Health`.
+3. Rodar `Auth > Login`.
+4. Rodar os requests autenticados de produtos, midia, leads e vendedores.
+
+## Diferenca entre homolog local e producao
+
+### Homolog local
+
+- `apiBaseUrl = http://localhost:5000/api`
+- `uploadsBaseUrl = http://localhost:5000/uploads`
+
+### Producao
+
+- `apiBaseUrl = https://stylodesigner.alwaysdata.net/api`
+- `uploadsBaseUrl = https://stylodesigner.alwaysdata.net/uploads`
+
+## Observacoes
+
+- A rota de login real e `/api/login`, nao `/api/auth/login`.
+- O frontend carrega imagens do mesmo host da API correspondente ao ambiente.
+- Em edicao de produto, a remocao de todas as imagens tambem e suportada.
