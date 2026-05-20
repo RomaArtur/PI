@@ -82,6 +82,25 @@ const syncMediaAssets = async ({ produtoId, uploadedFiles = [], source = "produt
   );
 };
 
+const normalizeProdutoResponse = (produto) => {
+  if (!produto) return produto;
+
+  const base =
+    typeof produto.toObject === "function" ? produto.toObject() : { ...produto };
+  const hasGalleryField = Array.isArray(base.imagens);
+  const imagens = hasGalleryField
+    ? base.imagens.filter(Boolean)
+    : base.imagem
+      ? [base.imagem]
+      : [];
+
+  return {
+    ...base,
+    imagem: imagens[0] || "",
+    imagens,
+  };
+};
+
 class ProdutoController {
   static registrarProduto = async (req, res) => {
     try {
@@ -110,7 +129,7 @@ class ProdutoController {
 
       res.status(201).json({
         mensagem: "Produto cadastrado com sucesso!",
-        dados: novoProduto,
+        dados: normalizeProdutoResponse(novoProduto),
       });
     } catch (erro) {
       res.status(400).json({ mensagem: "Dados inválidos", erro: erro.message });
@@ -149,7 +168,7 @@ class ProdutoController {
         .limit(Number(limit));
 
       res.status(200).json({
-        dados: produtos,
+        dados: produtos.map((produto) => normalizeProdutoResponse(produto)),
         total,
         page: Number(page),
         totalPages: Math.ceil(total / Number(limit)) || 1,
@@ -222,7 +241,7 @@ class ProdutoController {
 
       res.status(200).json({
         mensagem: "Produto atualizado com sucesso!",
-        dados: produtoAtualizado,
+        dados: normalizeProdutoResponse(produtoAtualizado),
       });
     } catch (erro) {
       res.status(400).json({
