@@ -8,9 +8,10 @@ export const produtoSchemaZod = z.object({
     z.number().positive("Preço deve ser positivo"),
   ),
   prazoProducaoDias: z.preprocess(
-    (val) => parseInt(val),
+    (val) => parseInt(val, 10),
     z.number().int().min(0),
   ),
   descricao: z.string().min(10, "Descrição deve ter no mínimo 10 caracteres"),
-  imagem: z.string().optional(), 
+  imagem: z.string().optional(),
+  imagens: z.union([z.array(z.string()), z.string()]).optional(),
 });

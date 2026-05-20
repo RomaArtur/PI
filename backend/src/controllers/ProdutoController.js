@@ -1,14 +1,17 @@
-import Produto from "../models/Produto.js";
+/* global process */
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import MediaAsset from "../models/MediaAsset.js";
+import Produto from "../models/Produto.js";
+import { filesToWebPaths } from "../utils/uploads.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// Resolve to repo root: backend/src/controllers -> backend/src -> backend -> (repo root)
 const DEBUG_LOG_PATH = path.resolve(__dirname, "../../..", "debug-5768e2.log");
 const UPLOADS_DIR = path.resolve(__dirname, "..", "..", "uploads");
 const AGENT_DEBUG_ENABLED = process.env.ENABLE_AGENT_DEBUG === "true";
+
 const agentAppendLog = (payload) => {
   if (!AGENT_DEBUG_ENABLED) return;
   try {
@@ -22,9 +25,10 @@ const tryDeleteUploadByWebPath = (webPath) => {
   try {
     if (!webPath || typeof webPath !== "string") return false;
     if (!webPath.startsWith("/uploads/")) return false;
-    const fileName = path.basename(webPath);
-    const filePath = path.join(UPLOADS_DIR, fileName);
+
+    const filePath = path.join(UPLOADS_DIR, path.basename(webPath));
     if (!fs.existsSync(filePath)) return false;
+
     fs.unlinkSync(filePath);
     return true;
   } catch {
@@ -32,25 +36,75 @@ const tryDeleteUploadByWebPath = (webPath) => {
   }
 };
 
+const normalizeBodyImages = (value) => {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  if (typeof value !== "string") return [];
+
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+};
+
+const buildProdutoImages = (payload = {}, uploadedFiles = [], fallbackImages = []) => {
+  const bodyImages = normalizeBodyImages(payload.imagens);
+  const uploadedPaths = filesToWebPaths(uploadedFiles);
+  const legacyImage =
+    typeof payload.imagem === "string" && payload.imagem.trim()
+      ? [payload.imagem.trim()]
+      : [];
+
+  const imagens = [...bodyImages, ...uploadedPaths, ...legacyImage, ...fallbackImages]
+    .filter(Boolean);
+  const uniqueImages = [...new Set(imagens)];
+
+  return {
+    imagem: uniqueImages[0] || "",
+    imagens: uniqueImages,
+  };
+};
+
+const syncMediaAssets = async ({ produtoId, uploadedFiles = [], source = "produto" }) => {
+  if (!uploadedFiles.length) return;
+
+  await MediaAsset.insertMany(
+    uploadedFiles.map((file) => ({
+      originalName: file.originalname,
+      fileName: file.filename,
+      mimeType: file.mimetype,
+      size: file.size,
+      url: `/uploads/${file.filename}`,
+      source,
+      produtoId,
+    })),
+  );
+};
+
 class ProdutoController {
   static registrarProduto = async (req, res) => {
     try {
-      // #region agent log
-      fetch('http://127.0.0.1:7670/ingest/67f76ef3-088f-43b2-b843-3884353bbc2e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5768e2'},body:JSON.stringify({sessionId:'5768e2',runId:'pre-fix',hypothesisId:'H2',location:'backend/src/controllers/ProdutoController.js:registrarProduto',message:'registrarProduto entry',data:{bodyKeys:Object.keys(req.body||{}),hasFile:!!req.file,fileField:req.file?.fieldname,fileName:req.file?.filename,filePath:req.file?.path},timestamp:Date.now()})}).catch(()=>{});
-      // #endregion
-      agentAppendLog({ sessionId: "5768e2", runId: "pre-fix", hypothesisId: "H2", location: "backend/src/controllers/ProdutoController.js:registrarProduto", message: "registrarProduto entry (file)", data: { bodyKeys: Object.keys(req.body || {}), hasFile: !!req.file, fileField: req.file?.fieldname, fileName: req.file?.filename } , timestamp: Date.now() });
+      agentAppendLog({
+        sessionId: "5768e2",
+        runId: "pre-fix",
+        hypothesisId: "H2",
+        location: "backend/src/controllers/ProdutoController.js:registrarProduto",
+        message: "registrarProduto entry",
+        data: {
+          bodyKeys: Object.keys(req.body || {}),
+          filesCount: req.uploadedProdutoFiles?.length || 0,
+        },
+        timestamp: Date.now(),
+      });
 
       const payload = { ...req.body };
-      if (req.file?.filename) {
-        payload.imagem = `/uploads/${req.file.filename}`;
-      }
-
-      // #region agent log
-      fetch('http://127.0.0.1:7670/ingest/67f76ef3-088f-43b2-b843-3884353bbc2e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5768e2'},body:JSON.stringify({sessionId:'5768e2',runId:'pre-fix',hypothesisId:'H2',location:'backend/src/controllers/ProdutoController.js:registrarProduto',message:'registrarProduto payload prepared',data:{imagem:payload.imagem||null},timestamp:Date.now()})}).catch(()=>{});
-      // #endregion
-      agentAppendLog({ sessionId: "5768e2", runId: "pre-fix", hypothesisId: "H2", location: "backend/src/controllers/ProdutoController.js:registrarProduto", message: "registrarProduto payload prepared (file)", data: { imagem: payload.imagem || null }, timestamp: Date.now() });
+      Object.assign(payload, buildProdutoImages(payload, req.uploadedProdutoFiles));
 
       const novoProduto = await Produto.create(payload);
+      await syncMediaAssets({
+        produtoId: novoProduto._id,
+        uploadedFiles: req.uploadedProdutoFiles,
+      });
+
       res.status(201).json({
         mensagem: "Produto cadastrado com sucesso!",
         dados: novoProduto,
@@ -70,7 +124,7 @@ class ProdutoController {
         page = 1,
         limit = 10,
       } = req.query;
-      let filtro = {};
+      const filtro = {};
 
       if (admin !== "true") {
         filtro.ativo = true;
@@ -91,11 +145,6 @@ class ProdutoController {
         .skip(skip)
         .limit(Number(limit));
 
-      // #region agent log
-      fetch('http://127.0.0.1:7670/ingest/67f76ef3-088f-43b2-b843-3884353bbc2e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5768e2'},body:JSON.stringify({sessionId:'5768e2',runId:'pre-fix',hypothesisId:'H3',location:'backend/src/controllers/ProdutoController.js:listarProdutos',message:'listarProdutos result',data:{admin,returned:produtos.length,total,firstImagem:produtos[0]?.imagem||null},timestamp:Date.now()})}).catch(()=>{});
-      // #endregion
-      agentAppendLog({ sessionId: "5768e2", runId: "pre-fix", hypothesisId: "H3", location: "backend/src/controllers/ProdutoController.js:listarProdutos", message: "listarProdutos result (file)", data: { admin, returned: produtos.length, total, firstImagem: produtos[0]?.imagem || null }, timestamp: Date.now() });
-
       res.status(200).json({
         dados: produtos,
         total,
@@ -103,48 +152,64 @@ class ProdutoController {
         totalPages: Math.ceil(total / Number(limit)) || 1,
       });
     } catch (erro) {
-      res
-        .status(500)
-        .json({
-          mensagem: "Erro interno ao listar produtos",
-          erro: erro.message,
-        });
+      res.status(500).json({
+        mensagem: "Erro interno ao listar produtos",
+        erro: erro.message,
+      });
     }
   };
 
   static editarProduto = async (req, res) => {
     try {
       const { id } = req.params;
-      // #region agent log
-      fetch('http://127.0.0.1:7670/ingest/67f76ef3-088f-43b2-b843-3884353bbc2e',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'5768e2'},body:JSON.stringify({sessionId:'5768e2',runId:'pre-fix',hypothesisId:'H2',location:'backend/src/controllers/ProdutoController.js:editarProduto',message:'editarProduto entry',data:{id,bodyKeys:Object.keys(req.body||{}),hasFile:!!req.file,fileName:req.file?.filename},timestamp:Date.now()})}).catch(()=>{});
-      // #endregion
-      agentAppendLog({ sessionId: "5768e2", runId: "pre-fix", hypothesisId: "H2", location: "backend/src/controllers/ProdutoController.js:editarProduto", message: "editarProduto entry (file)", data: { id, bodyKeys: Object.keys(req.body || {}), hasFile: !!req.file, fileName: req.file?.filename }, timestamp: Date.now() });
-
       const existente = await Produto.findById(id);
-      if (!existente)
+      if (!existente) {
         return res.status(404).json({ mensagem: "Produto não encontrado." });
+      }
 
-      const oldImagem = existente.imagem || null;
+      const oldImagens = Array.isArray(existente.imagens)
+        ? existente.imagens
+        : existente.imagem
+          ? [existente.imagem]
+          : [];
 
       const payload = { ...req.body };
-      if (req.file?.filename) payload.imagem = `/uploads/${req.file.filename}`;
+      Object.assign(
+        payload,
+        buildProdutoImages(
+          payload,
+          req.uploadedProdutoFiles,
+          req.uploadedProdutoFiles?.length ? [] : oldImagens,
+        ),
+      );
 
       const produtoAtualizado = await Produto.findByIdAndUpdate(id, payload, {
         returnDocument: "after",
       });
 
-      if (!produtoAtualizado)
+      if (!produtoAtualizado) {
         return res.status(404).json({ mensagem: "Produto não encontrado." });
+      }
 
-      if (req.file?.filename && oldImagem && oldImagem !== payload.imagem) {
-        const deleted = tryDeleteUploadByWebPath(oldImagem);
+      await syncMediaAssets({
+        produtoId: produtoAtualizado._id,
+        uploadedFiles: req.uploadedProdutoFiles,
+      });
+
+      const removedImages = oldImagens.filter(
+        (image) => !produtoAtualizado.imagens?.includes(image),
+      );
+
+      for (const image of removedImages) {
+        const deleted = tryDeleteUploadByWebPath(image);
+        await MediaAsset.deleteMany({ produtoId: produtoAtualizado._id, url: image });
         agentAppendLog({
           sessionId: "5768e2",
           runId: "pre-fix",
           hypothesisId: "H9",
           location: "backend/src/controllers/ProdutoController.js:editarProduto",
           message: "deleted old upload on replace",
-          data: { oldImagem, deleted },
+          data: { oldImagem: image, deleted },
           timestamp: Date.now(),
         });
       }
@@ -154,9 +219,10 @@ class ProdutoController {
         dados: produtoAtualizado,
       });
     } catch (erro) {
-      res
-        .status(400)
-        .json({ mensagem: "Erro ao atualizar produto", erro: erro.message });
+      res.status(400).json({
+        mensagem: "Erro ao atualizar produto",
+        erro: erro.message,
+      });
     }
   };
 
@@ -164,15 +230,22 @@ class ProdutoController {
     try {
       const { id } = req.params;
       const existente = await Produto.findById(id);
-      if (!existente)
+      if (!existente) {
         return res.status(404).json({ mensagem: "Produto não encontrado." });
+      }
 
-      const imagem = existente.imagem || null;
+      const imagens = Array.isArray(existente.imagens)
+        ? existente.imagens
+        : existente.imagem
+          ? [existente.imagem]
+          : [];
+
       const deletado = await Produto.findByIdAndDelete(id);
-      if (!deletado)
+      if (!deletado) {
         return res.status(404).json({ mensagem: "Produto não encontrado." });
+      }
 
-      if (imagem) {
+      for (const imagem of imagens) {
         const deleted = tryDeleteUploadByWebPath(imagem);
         agentAppendLog({
           sessionId: "5768e2",
@@ -184,11 +257,14 @@ class ProdutoController {
           timestamp: Date.now(),
         });
       }
+
+      await MediaAsset.deleteMany({ produtoId: id });
       res.status(200).json({ mensagem: "Produto excluído com sucesso!" });
     } catch (erro) {
-      res
-        .status(400)
-        .json({ mensagem: "Erro ao excluir produto", erro: erro.message });
+      res.status(400).json({
+        mensagem: "Erro ao excluir produto",
+        erro: erro.message,
+      });
     }
   };
 }

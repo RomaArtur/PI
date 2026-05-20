@@ -18,7 +18,7 @@ const renderCatalogStatus = (message, tone = "") => `
 `;
 
 const renderCatalogCard = (produto) => {
-  let imagePath = produto.imagem || "";
+  let imagePath = produto.imagem || produto.imagens?.[0] || "";
 
   if (imagePath && !imagePath.startsWith("http")) {
     const cleanPath = imagePath.startsWith("/") ? imagePath : `/${imagePath}`;

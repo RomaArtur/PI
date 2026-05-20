@@ -6,6 +6,7 @@ import leads from "./leadRoutes.js";
 import login from "./authRoutes.js";
 import vendedores from "./vendedorRoutes.js";
 import produtos from "./produtoRoutes.js";
+import media from "./mediaRoutes.js";
 
 const router = express.Router();
 {
@@ -33,6 +34,7 @@ const router = express.Router();
   router.use("/leads", leads);
   router.use("/vendedores", vendedores);
   router.use("/produtos", produtos);
+  router.use("/media", media);
   router.use("/login", login);
 }
 

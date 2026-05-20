@@ -5,6 +5,8 @@ class ProdutoForm extends HTMLElement {
   connectedCallback() {
     this._cropper = null;
     this._croppedFile = null;
+    this._selectedFiles = [];
+    this._existingImages = [];
     this.render();
   }
 
@@ -35,9 +37,10 @@ class ProdutoForm extends HTMLElement {
           </div>
 
           <div class="form-group form-group-full">
-            <label for="prod-imagem">Foto do Produto</label>
-            <input type="file" id="prod-imagem" name="imagem" accept="image/*">
+            <label for="prod-imagem">Fotos do Produto</label>
+            <input type="file" id="prod-imagem" name="imagens" accept="image/*" multiple>
             <p id="current-img-name" class="form-helper"></p>
+            <div id="existing-images" class="form-helper"></div>
           </div>
         </div>
 
@@ -119,10 +122,20 @@ class ProdutoForm extends HTMLElement {
 
   handleImageSelected(e) {
     const input = e.target;
-    const file = input.files?.[0];
+    const files = Array.from(input.files || []);
+    const firstFile = files[0];
     this._croppedFile = null;
+    this._selectedFiles = files;
 
-    if (!file) return;
+    if (!firstFile) return;
+
+    const currentImgName = this.querySelector("#current-img-name");
+    if (files.length > 1) {
+      if (currentImgName) {
+        currentImgName.textContent = `${files.length} imagens selecionadas para envio.`;
+      }
+      return;
+    }
 
     const modal = this.querySelector("#modal-crop-produto");
     const img = this.querySelector("#crop-image");
@@ -134,7 +147,7 @@ class ProdutoForm extends HTMLElement {
       this._cropper = null;
     }
 
-    const url = URL.createObjectURL(file);
+    const url = URL.createObjectURL(firstFile);
     img.onload = () => URL.revokeObjectURL(url);
     img.src = url;
 
@@ -166,6 +179,7 @@ class ProdutoForm extends HTMLElement {
 
     if (clearSelection) {
       this._croppedFile = null;
+      this._selectedFiles = [];
       if (input) input.value = "";
       const currentImgName = this.querySelector("#current-img-name");
       if (currentImgName) currentImgName.textContent = "";
@@ -195,10 +209,12 @@ class ProdutoForm extends HTMLElement {
     const safeBase =
       (original.name || "produto")
         .replace(/\.[^/.]+$/, "")
-        .replace(/[^\w\-]+/g, "_") || "produto";
+        .replace(/[^\w-]+/g, "_") || "produto";
+
     this._croppedFile = new File([blob], `${safeBase}.jpg`, {
       type: "image/jpeg",
     });
+    this._selectedFiles = [this._croppedFile];
 
     const currentImgName = this.querySelector("#current-img-name");
     if (currentImgName) {
@@ -219,11 +235,22 @@ class ProdutoForm extends HTMLElement {
     submitBtn.textContent = "Enviando arquivo...";
 
     const formData = new FormData(form);
-    if (this._croppedFile) {
-      formData.set("imagem", this._croppedFile, this._croppedFile.name);
-    }
-    const id = formData.get("id");
+    formData.delete("imagens");
+    formData.delete("imagem");
 
+    if (this._croppedFile) {
+      formData.append("imagem", this._croppedFile, this._croppedFile.name);
+    } else {
+      this._selectedFiles.forEach((file) => {
+        formData.append("imagens", file, file.name);
+      });
+    }
+
+    this._existingImages.forEach((image) => {
+      formData.append("imagens", image);
+    });
+
+    const id = formData.get("id");
     const method = id ? "PUT" : "POST";
     const endpoint = id ? `/produtos/${id}` : "/produtos";
 
@@ -266,9 +293,20 @@ class ProdutoForm extends HTMLElement {
     form.querySelector("#prod-prazo").value = prod.prazoProducaoDias || "";
     form.querySelector("#prod-descricao").value = prod.descricao || "";
 
+    this._existingImages = Array.isArray(prod.imagens)
+      ? [...prod.imagens]
+      : prod.imagem
+        ? [prod.imagem]
+        : [];
+
     const currentImgName = this.querySelector("#current-img-name");
-    currentImgName.textContent = prod.imagem
-      ? `Arquivo atual: ${prod.imagem.split("/").pop()}`
+    currentImgName.textContent = this._existingImages.length
+      ? `${this._existingImages.length} imagem(ns) já cadastrada(s).`
+      : "";
+
+    const existingImages = this.querySelector("#existing-images");
+    existingImages.textContent = this._existingImages.length
+      ? this._existingImages.map((image) => image.split("/").pop()).join(", ")
       : "";
 
     this.clearFeedback();
@@ -280,8 +318,12 @@ class ProdutoForm extends HTMLElement {
       form.reset();
       form.querySelector("#prod-id").value = "";
     }
+
     this._croppedFile = null;
+    this._selectedFiles = [];
+    this._existingImages = [];
     this.querySelector("#current-img-name").textContent = "";
+    this.querySelector("#existing-images").textContent = "";
     this.clearFeedback();
   }
 }
