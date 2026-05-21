@@ -35,7 +35,29 @@ postman/
 
 ## Como rodar localmente
 
-### 1. Backend
+### 1. Forma mais simples
+
+Na raiz do projeto, rode:
+
+```bash
+npm run start
+```
+
+Esse comando sobe a API local e serve tambem o frontend pelo mesmo processo:
+
+- frontend: `http://localhost:5000/index.html`
+- dashboard: `http://localhost:5000/dashboard.html`
+- backend: `http://localhost:5000/api`
+
+Se quiser acompanhar os logs em tempo real durante o desenvolvimento, use:
+
+```bash
+npm run dev
+```
+
+Para encerrar qualquer um dos dois, use `Ctrl + C`.
+
+### 2. Backend
 
 ```bash
 cd backend
@@ -62,7 +84,7 @@ API local:
 - `http://localhost:5000/api`
 - uploads locais: `http://localhost:5000/uploads`
 
-### 2. Frontend
+### 3. Frontend
 
 Sirva a pasta `frontend/` com Live Server, Vite static preview ou qualquer servidor HTTP simples. Em desenvolvimento, o frontend ja aponta para `http://localhost:5000/api` quando aberto em `localhost` ou `127.0.0.1`.
 
