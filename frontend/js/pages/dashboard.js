@@ -52,12 +52,6 @@ const renderLeadRow = (lead) => `
     <td>
       <div class="table-actions">
         ${renderActionButton({
-          action: "whatsapp-lead",
-          id: lead._id,
-          label: "WhatsApp",
-          tone: "btn-action-whatsapp",
-        })}
-        ${renderActionButton({
           action: "edit-lead",
           id: lead._id,
           label: "Editar",
@@ -152,7 +146,6 @@ const Auth = {
 
 const Leads = {
   state: { page: 1, limit: 10, busca: "", sort: "createdAt", order: "desc" },
-  cache: [],
 
   async load() {
     const tbody = document.getElementById("tbody-leads");
@@ -174,7 +167,6 @@ const Leads = {
       }
 
       const { items, totalPages } = normalizeCollection(res.dados);
-      this.cache = items;
 
       tbody.innerHTML = items.length
         ? items.map(renderLeadRow).join("")
@@ -217,73 +209,6 @@ const Leads = {
 
     const res = await apiFetch(`/leads/${id}`, { method: "DELETE" });
     if (res.ok) this.load();
-  },
-};
-
-const WhatsAppActions = {
-  currentLead: null,
-
-  normalizePhone(phone = "") {
-    const digits = String(phone).replace(/\D/g, "");
-    if (digits.length === 10 || digits.length === 11) {
-      return `55${digits}`;
-    }
-    return digits;
-  },
-
-  getLeadName(lead = {}) {
-    return formatLeadName(lead);
-  },
-
-  getMessage(type) {
-    if (!this.currentLead) return "";
-    const nome = this.getLeadName(this.currentLead);
-
-    if (type === "followup") {
-      return `Oi, ${nome}! Passando para dar continuidade ao seu atendimento com a Stilo & Designer. Se quiser, posso te ajudar com catálogo, orçamento e próximos passos.`;
-    }
-
-    return `Oi, ${nome}! Tudo bem? Aqui é da Stilo & Designer. Vi seu cadastro e queria te ajudar com catálogo, ideias e orçamento para o que você precisar.`;
-  },
-
-  open(lead) {
-    this.currentLead = lead;
-    const modal = document.getElementById("modal-whatsapp");
-    const meta = document.getElementById("whatsapp-lead-meta");
-    const feedback = document.getElementById("whatsapp-feedback");
-    if (feedback) {
-      feedback.textContent = "";
-      feedback.className = "form-feedback";
-    }
-    if (meta) {
-      meta.textContent = `${this.getLeadName(lead)} • ${lead.whatsapp || "WhatsApp não informado"}`;
-    }
-    modal?.showModal();
-  },
-
-  getWaUrl(type = "open") {
-    if (!this.currentLead) return "";
-    const phone = this.normalizePhone(this.currentLead.whatsapp);
-    if (!phone) return "";
-
-    const message = type === "open" ? "" : `?text=${encodeURIComponent(this.getMessage(type))}`;
-    return `https://wa.me/${phone}${message}`;
-  },
-
-  setFeedback(message, type = "success") {
-    const feedback = document.getElementById("whatsapp-feedback");
-    if (!feedback) return;
-    feedback.textContent = message;
-    feedback.className = `form-feedback is-visible ${type === "error" ? "is-error" : "is-success"}`;
-  },
-
-  async copy(text, successMessage) {
-    try {
-      await navigator.clipboard.writeText(text);
-      this.setFeedback(successMessage, "success");
-    } catch {
-      this.setFeedback("Não foi possível copiar agora.", "error");
-    }
   },
 };
 
@@ -414,11 +339,6 @@ const setupTableActions = () => {
       void Leads.edit(actionTrigger.dataset.id);
     }
 
-    if (actionTrigger.dataset.action === "whatsapp-lead") {
-      const lead = Leads.cache.find((item) => item._id === actionTrigger.dataset.id);
-      if (lead) WhatsAppActions.open(lead);
-    }
-
     if (actionTrigger.dataset.action === "delete-lead") {
       void Leads.delete(actionTrigger.dataset.id);
     }
@@ -458,41 +378,6 @@ const setupGlobalEvents = () => {
     }
     document.getElementById("modal-preview-catalog")?.showModal();
   });
-
-  document.getElementById("btn-wa-open")?.addEventListener("click", () => {
-    const url = WhatsAppActions.getWaUrl("open");
-    if (!url) return WhatsAppActions.setFeedback("WhatsApp inválido para este lead.", "error");
-    window.open(url, "_blank", "noopener,noreferrer");
-  });
-
-  document.getElementById("btn-wa-intro")?.addEventListener("click", () => {
-    const url = WhatsAppActions.getWaUrl("intro");
-    if (!url) return WhatsAppActions.setFeedback("WhatsApp inválido para este lead.", "error");
-    window.open(url, "_blank", "noopener,noreferrer");
-  });
-
-  document.getElementById("btn-wa-followup")?.addEventListener("click", () => {
-    const url = WhatsAppActions.getWaUrl("followup");
-    if (!url) return WhatsAppActions.setFeedback("WhatsApp inválido para este lead.", "error");
-    window.open(url, "_blank", "noopener,noreferrer");
-  });
-
-  document.getElementById("btn-wa-copy-number")?.addEventListener("click", () => {
-    if (!WhatsAppActions.currentLead?.whatsapp) {
-      return WhatsAppActions.setFeedback("WhatsApp inválido para este lead.", "error");
-    }
-    void WhatsAppActions.copy(
-      WhatsAppActions.currentLead.whatsapp,
-      "Número copiado com sucesso.",
-    );
-  });
-
-  document.getElementById("btn-wa-copy-message")?.addEventListener("click", () => {
-    const message = WhatsAppActions.getMessage("intro");
-    if (!message) return WhatsAppActions.setFeedback("Lead não selecionado.", "error");
-    void WhatsAppActions.copy(message, "Mensagem copiada com sucesso.");
-  });
-
   document.getElementById("search-leads")?.addEventListener(
     "input",
     debounce((event) => {
