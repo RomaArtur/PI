@@ -11,6 +11,7 @@ dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const frontendDir = path.resolve(__dirname, "../../frontend");
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api", routes);
+app.use(express.static(frontendDir));
 
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.IP || "0.0.0.0";

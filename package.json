@@ -1,0 +1,11 @@
+{
+  "name": "pi-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Workspace scripts for local development",
+  "type": "module",
+  "scripts": {
+    "start": "npm --prefix backend run start",
+    "dev": "npm --prefix backend run dev"
+  }
+}
