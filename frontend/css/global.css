@@ -180,6 +180,25 @@ brand-logo {
   letter-spacing: -0.035em;
 }
 
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.brand-logo-image {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.brand-logo-text {
+  font-size: 1.18rem;
+  white-space: nowrap;
+}
+
 .btn-primary {
   display: inline-flex;
   align-items: center;

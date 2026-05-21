@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Administrativo - PI Gestão</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/png" href="assets/logo.png">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/dashboard.css">
@@ -37,6 +37,9 @@
                     <h2 id="welcome-msg">Bem-vindo</h2>
                     <span id="user-email" class="text-muted"></span>
                 </div>
+            </div>
+            <div class="content-header-actions">
+                <button type="button" class="btn-action" id="btn-preview-catalog">Ver catálogo</button>
             </div>
         </header>
 
@@ -124,6 +127,47 @@
                 >&times;</button>
             </header>
             <produto-form id="component-produto-form"></produto-form>
+        </div>
+    </dialog>
+
+    <dialog id="modal-whatsapp" class="modal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <h3 id="modal-title-whatsapp">Ações no WhatsApp</h3>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-dialog-close="#modal-whatsapp"
+                >&times;</button>
+            </header>
+            <p id="whatsapp-lead-meta" class="text-muted mb-2"></p>
+            <div class="dashboard-quick-actions">
+                <button type="button" class="btn-primary" id="btn-wa-open">Abrir conversa</button>
+                <button type="button" class="btn-action" id="btn-wa-intro">Mensagem inicial</button>
+                <button type="button" class="btn-action" id="btn-wa-followup">Follow-up</button>
+                <button type="button" class="btn-action" id="btn-wa-copy-number">Copiar número</button>
+                <button type="button" class="btn-action" id="btn-wa-copy-message">Copiar mensagem</button>
+            </div>
+            <div id="whatsapp-feedback" class="form-feedback" aria-live="polite"></div>
+        </div>
+    </dialog>
+
+    <dialog id="modal-preview-catalog" class="modal">
+        <div class="modal-content modal-content-preview">
+            <header class="modal-header">
+                <h3>Pré-visualizar catálogo</h3>
+                <div class="modal-preview-actions">
+                    <a href="index.html" target="_blank" rel="noopener noreferrer" class="btn-action">Abrir em nova aba</a>
+                    <button type="button" class="btn-close" data-dialog-close="#modal-preview-catalog">&times;</button>
+                </div>
+            </header>
+            <iframe
+                id="catalog-preview-frame"
+                class="catalog-preview-frame"
+                src="index.html"
+                title="Pré-visualização do catálogo"
+                loading="lazy"
+            ></iframe>
         </div>
     </dialog>
 
