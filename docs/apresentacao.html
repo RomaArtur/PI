@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apresentacao do Sistema</title>
+    <style>
+      :root {
+        --bg: #f7f4ff;
+        --bg-soft: #fffaf2;
+        --card: rgba(255, 255, 255, 0.86);
+        --text: #251b37;
+        --muted: #6c6482;
+        --primary: #cb7bd6;
+        --primary-strong: #8f4aa1;
+        --accent: #ffb86b;
+        --border: rgba(143, 74, 161, 0.18);
+        --shadow: 0 20px 55px rgba(63, 29, 84, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(255, 184, 107, 0.26), transparent 28%),
+          radial-gradient(circle at top right, rgba(203, 123, 214, 0.28), transparent 24%),
+          linear-gradient(180deg, #fcfbff 0%, var(--bg) 100%);
+      }
+
+      .page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 36px 0 60px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+        align-items: center;
+        margin-bottom: 28px;
+      }
+
+      .hero-card,
+      .section-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+      }
+
+      .hero-copy {
+        padding: 30px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(203, 123, 214, 0.12);
+        color: var(--primary-strong);
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 18px 0 14px;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        line-height: 1;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
+        font-size: 1rem;
+      }
+
+      .hero-points {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .hero-point {
+        padding: 14px 16px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(143, 74, 161, 0.12);
+        border-radius: 18px;
+      }
+
+      .hero-point strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.96rem;
+      }
+
+      .hero-aside {
+        padding: 24px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .mini-card {
+        padding: 18px;
+        border-radius: 20px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,250,242,0.96));
+        border: 1px solid rgba(143, 74, 161, 0.12);
+      }
+
+      .mini-card strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .section-card {
+        overflow: hidden;
+      }
+
+      .section-card img {
+        display: block;
+        width: 100%;
+        background: linear-gradient(180deg, #fff, #fcf7ff);
+      }
+
+      .section-copy {
+        padding: 22px 22px 24px;
+      }
+
+      .section-copy h2 {
+        margin: 0 0 10px;
+        font-size: 1.2rem;
+      }
+
+      .section-copy ul {
+        margin: 14px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .footer-note {
+        margin-top: 22px;
+        padding: 18px 20px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+
+      @media (max-width: 920px) {
+        .hero,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-points {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <article class="hero-card hero-copy">
+          <span class="eyebrow">Visao resumida do sistema</span>
+          <h1>Um sistema simples de explicar e facil de visualizar</h1>
+          <p>
+            Este material foi pensado para mostrar, de forma curta e amigavel,
+            como o projeto foi organizado. A ideia e que qualquer pessoa consiga
+            entender o papel do site, do painel, da API e do banco de dados sem
+            entrar em detalhes tecnicos demais.
+          </p>
+
+          <div class="hero-points">
+            <div class="hero-point">
+              <strong>Parte publica</strong>
+              <span>Mostra o catalogo e recebe interesse de clientes.</span>
+            </div>
+            <div class="hero-point">
+              <strong>Painel interno</strong>
+              <span>Organiza leads, produtos, imagens e vendedores.</span>
+            </div>
+            <div class="hero-point">
+              <strong>API</strong>
+              <span>Faz a ponte entre telas, regras e banco.</span>
+            </div>
+            <div class="hero-point">
+              <strong>Postman</strong>
+              <span>Ajuda a testar tudo de forma rapida e organizada.</span>
+            </div>
+          </div>
+        </article>
+
+        <aside class="hero-card hero-aside">
+          <div class="mini-card">
+            <strong>Ideal para apresentar a:</strong>
+            <p>cliente, professor, banca, parceiro ou alguem leigo no sistema.</p>
+          </div>
+          <div class="mini-card">
+            <strong>Arquivos incluidos:</strong>
+            <p>visao geral, arvore do projeto, mapa do Postman e guia resumido.</p>
+          </div>
+          <div class="mini-card">
+            <strong>Formato:</strong>
+            <p>SVG para ficar bonito e nitido em tela, PDF ou slide.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="grid">
+        <article class="section-card">
+          <img src="assets/visao-geral-sistema.svg" alt="Fluxo geral do sistema" />
+          <div class="section-copy">
+            <h2>1. Visao geral do sistema</h2>
+            <p>
+              Mostra o caminho principal: cliente, catalogo, dashboard, API,
+              banco de dados e imagens.
+            </p>
+            <ul>
+              <li>Explica rapido como a informacao circula</li>
+              <li>Ajuda a mostrar o valor do projeto</li>
+              <li>Bom para abrir uma apresentacao</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="section-card">
+          <img src="assets/arvore-projeto.svg" alt="Arvore do projeto" />
+          <div class="section-copy">
+            <h2>2. Estrutura do projeto</h2>
+            <p>
+              Resume como o codigo foi separado entre frontend, backend, testes
+              e arquivos enviados.
+            </p>
+            <ul>
+              <li>Facilita explicar a organizacao</li>
+              <li>Mostra que o projeto foi pensado em camadas</li>
+              <li>Evita apresentar uma arvore crua de terminal</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="section-card">
+          <img src="assets/mapa-postman.svg" alt="Mapa da collection do Postman" />
+          <div class="section-copy">
+            <h2>3. Colecao do Postman</h2>
+            <p>
+              Explica de forma visual como os testes foram organizados por grupos
+              e por ambiente.
+            </p>
+            <ul>
+              <li>Mostra os principais blocos da API</li>
+              <li>Explica local e producao</li>
+              <li>Ajuda a provar que o sistema e testavel</li>
+            </ul>
+          </div>
+        </article>
+      </section>
+
+      <div class="footer-note">
+        Dica: se voce quiser, pode usar esta pagina como base de entrega e depois
+        exportar as imagens para PNG com captura de tela ou conversao externa.
+      </div>
+    </main>
+  </body>
+</html>

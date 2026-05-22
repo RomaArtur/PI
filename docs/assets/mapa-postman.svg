@@ -1,0 +1,88 @@
+<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgPm" x1="120" y1="80" x2="1280" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF8F1"/>
+      <stop offset="1" stop-color="#F7EEFF"/>
+    </linearGradient>
+    <linearGradient id="cardPm" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFF5E8"/>
+    </linearGradient>
+    <filter id="shadowPm" x="0" y="0" width="1400" height="920" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#5A316E" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1400" height="920" rx="40" fill="url(#bgPm)"/>
+  <text x="700" y="88" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700" fill="#251B37">
+    Mapa da colecao do Postman
+  </text>
+  <text x="700" y="128" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#6D6483">
+    Um jeito visual de explicar como a API foi organizada para testes
+  </text>
+
+  <g filter="url(#shadowPm)">
+    <rect x="70" y="190" width="280" height="620" rx="30" fill="url(#cardPm)" stroke="#EFC89C"/>
+    <rect x="390" y="190" width="940" height="620" rx="30" fill="#FFFFFF" stroke="#DFC5F7"/>
+  </g>
+
+  <text x="210" y="246" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">
+    Ambientes
+  </text>
+  <text x="105" y="300" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#6D6483">Local</text>
+  <text x="105" y="334" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#8A809D">localhost:5000/api</text>
+  <text x="105" y="404" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#6D6483">Producao</text>
+  <text x="105" y="438" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#8A809D">alwaysdata.net/api</text>
+  <text x="105" y="520" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#6D6483">Variaveis principais</text>
+  <text x="105" y="560" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#8A809D">token</text>
+  <text x="105" y="590" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#8A809D">produtoId</text>
+  <text x="105" y="620" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#8A809D">leadId</text>
+  <text x="105" y="650" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#8A809D">mediaId</text>
+  <text x="105" y="680" font-family="Segoe UI, Arial, sans-serif" font-size="18" fill="#8A809D">vendedorId</text>
+
+  <text x="860" y="246" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">
+    Blocos da collection
+  </text>
+
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <rect x="440" y="290" width="220" height="120" rx="24" fill="#FFF7EE" stroke="#F0C99C"/>
+    <text x="470" y="338" font-size="26" font-weight="700" fill="#251B37">Health</text>
+    <text x="470" y="374" font-size="18" fill="#6D6483">Confere API, Mongo</text>
+    <text x="470" y="398" font-size="18" fill="#6D6483">e uploads</text>
+
+    <rect x="700" y="290" width="220" height="120" rx="24" fill="#F9F1FF" stroke="#D7B9F0"/>
+    <text x="730" y="338" font-size="26" font-weight="700" fill="#251B37">Auth</text>
+    <text x="730" y="374" font-size="18" fill="#6D6483">Faz login e salva</text>
+    <text x="730" y="398" font-size="18" fill="#6D6483">o token</text>
+
+    <rect x="960" y="290" width="300" height="120" rx="24" fill="#FFF7EE" stroke="#F0C99C"/>
+    <text x="990" y="338" font-size="26" font-weight="700" fill="#251B37">Produtos</text>
+    <text x="990" y="374" font-size="18" fill="#6D6483">Lista, cria, atualiza</text>
+    <text x="990" y="398" font-size="18" fill="#6D6483">e exclui produtos</text>
+
+    <rect x="440" y="450" width="220" height="120" rx="24" fill="#F9F1FF" stroke="#D7B9F0"/>
+    <text x="470" y="498" font-size="26" font-weight="700" fill="#251B37">Midia</text>
+    <text x="470" y="534" font-size="18" fill="#6D6483">Testa a biblioteca</text>
+    <text x="470" y="558" font-size="18" fill="#6D6483">de imagens</text>
+
+    <rect x="700" y="450" width="220" height="120" rx="24" fill="#FFF7EE" stroke="#F0C99C"/>
+    <text x="730" y="498" font-size="26" font-weight="700" fill="#251B37">Leads</text>
+    <text x="730" y="534" font-size="18" fill="#6D6483">Cria e acompanha</text>
+    <text x="730" y="558" font-size="18" fill="#6D6483">contatos</text>
+
+    <rect x="960" y="450" width="300" height="120" rx="24" fill="#F9F1FF" stroke="#D7B9F0"/>
+    <text x="990" y="498" font-size="26" font-weight="700" fill="#251B37">Vendedores</text>
+    <text x="990" y="534" font-size="18" fill="#6D6483">Cadastra e gerencia</text>
+    <text x="990" y="558" font-size="18" fill="#6D6483">acesso administrativo</text>
+
+    <rect x="440" y="640" width="820" height="110" rx="24" fill="#FFFFFF" stroke="#DFC5F7"/>
+    <text x="470" y="688" font-size="24" font-weight="700" fill="#251B37">Fluxo recomendado</text>
+    <text x="470" y="724" font-size="19" fill="#6D6483">
+      1. Seleciona o ambiente  2. Roda Health  3. Faz Login  4. Usa o token nos testes protegidos
+    </text>
+  </g>
+
+  <text x="700" y="860" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600" fill="#8F4AA1">
+    Em resumo: a collection deixa a API organizada em blocos simples de testar e explicar.
+  </text>
+</svg>

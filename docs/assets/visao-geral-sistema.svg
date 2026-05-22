@@ -1,0 +1,89 @@
+<svg width="1400" height="900" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="160" y1="60" x2="1240" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF8F0"/>
+      <stop offset="1" stop-color="#F5EDFF"/>
+    </linearGradient>
+    <linearGradient id="cardA" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#FFF7EF"/>
+    </linearGradient>
+    <linearGradient id="cardB" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F8F0FF"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1400" height="900" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#5B3070" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0 0L12 6L0 12V0Z" fill="#A368B3"/>
+    </marker>
+  </defs>
+
+  <rect width="1400" height="900" rx="40" fill="url(#bg)"/>
+  <circle cx="180" cy="120" r="110" fill="#FFE2B6" fill-opacity="0.45"/>
+  <circle cx="1250" cy="180" r="130" fill="#E7CCFF" fill-opacity="0.38"/>
+
+  <text x="700" y="92" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700" fill="#251B37">
+    Visao geral do sistema
+  </text>
+  <text x="700" y="132" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="22" fill="#6D6483">
+    Explicacao curta para leigos: quem entra, o que acontece e onde tudo fica salvo
+  </text>
+
+  <g filter="url(#shadow)">
+    <rect x="90" y="220" width="250" height="180" rx="28" fill="url(#cardA)" stroke="#E9C7AA"/>
+    <rect x="430" y="220" width="250" height="180" rx="28" fill="url(#cardB)" stroke="#D7B9F0"/>
+    <rect x="760" y="220" width="250" height="180" rx="28" fill="url(#cardB)" stroke="#D7B9F0"/>
+    <rect x="1090" y="220" width="220" height="180" rx="28" fill="url(#cardA)" stroke="#E9C7AA"/>
+
+    <rect x="220" y="540" width="300" height="180" rx="28" fill="url(#cardA)" stroke="#E9C7AA"/>
+    <rect x="560" y="540" width="300" height="180" rx="28" fill="url(#cardB)" stroke="#D7B9F0"/>
+    <rect x="900" y="540" width="300" height="180" rx="28" fill="url(#cardA)" stroke="#E9C7AA"/>
+  </g>
+
+  <path d="M340 310H430" stroke="#A368B3" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M680 310H760" stroke="#A368B3" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M1010 310H1090" stroke="#A368B3" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M555 490V540" stroke="#A368B3" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <path d="M860 490V540" stroke="#A368B3" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>
+
+  <text x="215" y="276" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">1. Cliente</text>
+  <text x="125" y="314" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">A pessoa acessa o site,</text>
+  <text x="125" y="344" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">ve os produtos e pode</text>
+  <text x="125" y="374" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">demonstrar interesse.</text>
+
+  <text x="540" y="276" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">2. Catalogo publico</text>
+  <text x="470" y="314" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">Mostra produtos,</text>
+  <text x="470" y="344" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">imagens, descricoes</text>
+  <text x="470" y="374" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">e formulario de lead.</text>
+
+  <text x="885" y="276" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">3. Dashboard</text>
+  <text x="800" y="314" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">Painel usado para</text>
+  <text x="800" y="344" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">organizar produtos,</text>
+  <text x="800" y="374" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">leads e vendedores.</text>
+
+  <text x="1200" y="276" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">4. API</text>
+  <text x="1120" y="314" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">Recebe as acoes do</text>
+  <text x="1120" y="344" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">site e aplica as regras</text>
+  <text x="1120" y="374" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">antes de salvar.</text>
+
+  <text x="370" y="596" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">5. MongoDB</text>
+  <text x="280" y="634" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">Guarda dados como:</text>
+  <text x="280" y="666" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">produtos, leads, midia</text>
+  <text x="280" y="698" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">e vendedores.</text>
+
+  <text x="710" y="596" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">6. Uploads</text>
+  <text x="620" y="634" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">As imagens fisicas ficam</text>
+  <text x="620" y="666" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">na pasta de uploads,</text>
+  <text x="620" y="698" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">com controle via sistema.</text>
+
+  <text x="1050" y="596" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#251B37">7. Testes</text>
+  <text x="960" y="634" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">A collection do Postman</text>
+  <text x="960" y="666" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">permite validar login,</text>
+  <text x="960" y="698" font-family="Segoe UI, Arial, sans-serif" font-size="21" fill="#6D6483">produtos, midia e leads.</text>
+
+  <text x="700" y="820" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="600" fill="#8F4AA1">
+    Resumo: o sistema une vitrine online, captacao de contatos e gestao interna em um fluxo unico.
+  </text>
+</svg>
